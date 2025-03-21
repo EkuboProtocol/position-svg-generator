@@ -19,6 +19,7 @@
     "vitest": "^2.0.5"
   },
   "dependencies": {
+    "decimal.js-light": "^2.5.1",
     "pure-rand": "^7.0.1"
   }
 }
