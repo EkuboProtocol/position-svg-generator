@@ -7,6 +7,8 @@
     "test": "vitest",
     "build": "tsup src/index.ts --dts --minify",
     "dev": "tsup src/index.ts --dts --watch",
+    "dev:ui": "concurrently \"npm run dev\" \"cd svg-generator-ui && npm run dev\"",
+    "setup:ui": "npm run build && npm link && cd svg-generator-ui && npm install && npm link @ekubo/position-svg-generator",
     "prepublishOnly": "rm -rf dist/ && npm run build"
   },
   "files": [
@@ -15,12 +17,25 @@
   "author": "Yohan Tancrez",
   "license": "UNLICENSED",
   "devDependencies": {
-    "tsup": "8.2.3",
-    "typescript": "5.5.4",
-    "vitest": "2.0.5"
+    "concurrently": "
+^
+8.2.2",
+    "tsup": "
+^
+8.2.3",
+    "typescript": "
+^
+5.5.4",
+    "vitest": "
+^
+2.0.5"
   },
   "dependencies": {
-    "decimal.js-light": "2.5.1",
-    "pure-rand": "7.0.1"
+    "decimal.js-light": "
+^
+2.5.1",
+    "pure-rand": "
+^
+7.0.1"
   }
 }
