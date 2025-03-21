@@ -6,6 +6,7 @@
   "scripts": {
     "test": "vitest",
     "build": "tsup src/index.ts --dts --minify",
+    "dev": "tsup src/index.ts --dts --watch",
     "prepublishOnly": "rm -rf dist/ && npm run build"
   },
   "files": [
@@ -14,12 +15,12 @@
   "author": "Yohan Tancrez",
   "license": "UNLICENSED",
   "devDependencies": {
-    "tsup": "^8.2.3",
-    "typescript": "^5.5.4",
-    "vitest": "^2.0.5"
+    "tsup": "8.2.3",
+    "typescript": "5.5.4",
+    "vitest": "2.0.5"
   },
   "dependencies": {
-    "decimal.js-light": "^2.5.1",
-    "pure-rand": "^7.0.1"
+    "decimal.js-light": "2.5.1",
+    "pure-rand": "7.0.1"
   }
 }
