@@ -48,13 +48,13 @@ export function generateSvg(
   const circleRadius = randomIn(45, 67);
   const stopColor1 = randomColor();
   const stopColor2 = randomColor();
-  console.log(stopColor1);
   const rect1X = randomIn(10, 40);
   const rectWidth = randomIn(40, 70);
   const rotateAngle = randomIn(0, 360);
 
   return `
-    <svg width="134" height="134" viewBox="0 0 134 134" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="134" height="180" viewBox="0 0 134 134" fill="none" xmlns="http://www.w3.org/2000/svg">
+
         <circle cx="67" cy="67" r="${circleRadius}" fill="url(#paint${id.toString()}_linear_1_30)"/>
         <path fill-rule="evenodd" clip-rule="evenodd"
             transform="rotate(${rotateAngle}, 67, 67)"
@@ -69,6 +69,48 @@ export function generateSvg(
                 <stop offset="1" stop-color="${stopColor2}"/>
             </linearGradient>
         </defs>
+
+              <rect 
+        x="0"
+        y="0"
+        width="134"
+        height="180"
+        fill="#00000044"
+        rx="5"
+        ry="5"
+      />
+
+
+        <text x="10" y="15" font-size="10" fill="white">
+          isFullRange: ${isFullRange}
+        </text>
+        <text x="10" y="30" font-size="10" fill="white">
+          extension: ${positionMetadata.extension}
+        </text>
+        <text x="10" y="45" font-size="10" fill="white">
+          Lower tick: ${positionMetadata.lower_bound}
+        </text>
+        <text x="10" y="60" font-size="10" fill="white">
+          Upper tick: ${positionMetadata.upper_bound}%
+        </text>
+        <text x="10" y="75" font-size="10" fill="white">
+          token0: ${positionMetadata.token0Symbol}
+        </text>
+        <text x="10" y="90" font-size="10" fill="white">
+          token1: ${positionMetadata.token1Symbol}
+        </text>
+        <text x="10" y="105" font-size="10" fill="white">
+          token0 address: ${positionMetadata.token0Address}
+        </text>
+        <text x="10" y="120" font-size="10" fill="white">
+          token1 address: ${positionMetadata.token1Address}
+        </text>
+        <text x="10" y="135" font-size="10" fill="white">
+          Tick Spacing: ${formattedTickSpacingPercent}%
+        </text>
+        <text x="10" y="150" font-size="10" fill="white">
+          Fee: ${formattedFeePercent}%
+        </text>
     </svg>
     `;
 }
