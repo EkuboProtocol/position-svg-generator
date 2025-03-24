@@ -2,7 +2,7 @@ export const SVG_EXAMPLES = [
   {
     title: "Regular CL position with fees and tickspacing",
     args: [
-      Number("223320167715534864472942017120693447232"),
+      4322083467723223809427970398838266745n,
       "1",
       {
         lower_bound: "20045000",
@@ -26,7 +26,7 @@ export const SVG_EXAMPLES = [
   {
     title: "Full range position with no extension",
     args: [
-      Number("223320167715534864472942017120693447232"),
+      223320167715534864472942017120693447232n,
       "1",
       {
         lower_bound: "-88722835",
@@ -50,7 +50,7 @@ export const SVG_EXAMPLES = [
   {
     title: "TWAMM position",
     args: [
-      Number("223320167715534864472942017120693447232"),
+      223320167715534864472942017120693447232n,
       "11155111",
       {
         lower_bound: "-88722835",
@@ -74,7 +74,7 @@ export const SVG_EXAMPLES = [
   {
     title: "Oracle position",
     args: [
-      Number("283420062935785082055505916173879047197"),
+      283420062935785082055505916173879047197n,
       "1",
       {
         lower_bound: "-88722835",
