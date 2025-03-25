@@ -91,7 +91,7 @@ export function generateSvg(
           Lower tick: ${positionMetadata.lower_bound}
         </text>
         <text x="10" y="60" font-size="10" fill="white">
-          Upper tick: ${positionMetadata.upper_bound}%
+          Upper tick: ${positionMetadata.upper_bound}
         </text>
         <text x="10" y="75" font-size="10" fill="white">
           token0: ${positionMetadata.token0Symbol}
