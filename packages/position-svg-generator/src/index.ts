@@ -74,7 +74,7 @@ export function generateSvg(
         ? [157, 90, 242, 1]
         : isFullRange
         ? [38, 232, 173, 1]
-        : undefined,
+        : [235, 30, 116, 1],
   });
 
   return `
