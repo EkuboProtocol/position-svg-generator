@@ -55,8 +55,9 @@ export function generateSvg(
 
   // Generate random parameters
   const circles = generateGridSVGCircles({
-    canvasWidth: SVG_WIDTH - 2 * SVG_GLOBAL_PADDING,
-    xOffset: SVG_GLOBAL_PADDING,
+    canvasWidth:
+      SVG_WIDTH - 2 * SVG_GLOBAL_PADDING - 2 * SVG_INNER_RECT_STROKE_WIDTH,
+    xOffset: SVG_GLOBAL_PADDING + SVG_INNER_RECT_STROKE_WIDTH,
     yOffset:
       SVG_GLOBAL_PADDING +
       SVG_TEXT_PADDING +
