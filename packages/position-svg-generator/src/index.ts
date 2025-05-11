@@ -51,7 +51,9 @@ export function generateSvg(
   const formattedTickSpacingPercent = spacingToPercent(
     Number(positionMetadata.tick_spacing)
   );
-  // const isFullRange = Number(positionMetadata.tick_spacing) === 0;
+  const isFullRange =
+    Number(positionMetadata.tick_spacing) === 0 &&
+    positionMetadata.extension === undefined;
 
   // Generate random parameters
   const circles = generateGridSVGCircles({
@@ -64,6 +66,15 @@ export function generateSvg(
       SVG_MAIN_FONT_SIZE * 2 +
       SVG_TEXT_PADDING,
     randomSeed: idNum,
+    fgColor1: [102, 28, 196, 1],
+    fgColor2:
+      positionMetadata.extension === "Oracle"
+        ? [223, 123, 50, 1]
+        : positionMetadata.extension === "DCA"
+        ? [157, 90, 242, 1]
+        : isFullRange
+        ? [38, 232, 173, 1]
+        : undefined,
   });
 
   return `
