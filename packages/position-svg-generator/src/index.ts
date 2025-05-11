@@ -112,7 +112,7 @@ export function generateSvg(
 
   <circle cx="${SVG_WIDTH / 1.2}" cy="${SVG_HEIGHT * 0.9}" r="${
     SVG_WIDTH / 2
-  }" fill="#EB1E7466" filter="url(#blurFilter)"/>
+  }" fill="#9D5AF266" filter="url(#blurFilter)"/>
   </g>
 
 
