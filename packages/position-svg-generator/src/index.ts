@@ -1,5 +1,6 @@
 import prand from "pure-rand";
 import { feeToPercent, spacingToPercent } from "./util/format";
+import { generateGridSVGCircles } from "./generateCircles";
 
 interface PositionMetadata {
   lower_bound: string;
@@ -13,10 +14,24 @@ interface PositionMetadata {
   fee: string;
   tick_spacing: string;
 
-  extension?: "TWAMM" | "ORACLE" | "UNKNOWN";
+  extension?: "DCA" | "Oracle" | "UNKNOWN";
 
   minted_timestamp: string;
 }
+
+const ratio = 4;
+
+const SVG_WIDTH = 1_000 / ratio;
+const SVG_HEIGHT = 1_000 / ratio;
+
+const SVG_GLOBAL_PADDING = 30 / ratio;
+const SVG_TEXT_PADDING = 42 / ratio;
+
+const SVG_MAIN_FONT_SIZE = 94 / ratio;
+const SVG_SMALLER_FONT_SIZE = 64 / ratio;
+
+const SVG_INNER_RECT_RADIUS = 18 / ratio;
+const SVG_INNER_RECT_STROKE_WIDTH = 1 / ratio;
 
 export function generateSvg(
   id: bigint,
@@ -29,12 +44,6 @@ export function generateSvg(
     idNum + prand.unsafeUniformIntDistribution(0, 2 ** 32 - idNum, generator)
   );
 
-  const randomColor = () =>
-    `#${prand
-      .unsafeUniformIntDistribution(0, 16777215, generator)
-      .toString(16)
-      .padStart(6, "0")}`;
-
   const randomIn = (min: number, max: number) =>
     prand.unsafeUniformIntDistribution(min, max, generator);
 
@@ -42,75 +51,94 @@ export function generateSvg(
   const formattedTickSpacingPercent = spacingToPercent(
     Number(positionMetadata.tick_spacing)
   );
-  const isFullRange = Number(positionMetadata.tick_spacing) === 0;
+  // const isFullRange = Number(positionMetadata.tick_spacing) === 0;
 
   // Generate random parameters
-  const circleRadius = randomIn(45, 67);
-  const stopColor1 = randomColor();
-  const stopColor2 = randomColor();
-  const rect1X = randomIn(10, 40);
-  const rectWidth = randomIn(40, 70);
-  const rotateAngle = randomIn(0, 360);
+  const circles = generateGridSVGCircles({
+    canvasWidth: SVG_WIDTH - 2 * SVG_GLOBAL_PADDING,
+    xOffset: SVG_GLOBAL_PADDING,
+    yOffset:
+      SVG_GLOBAL_PADDING +
+      SVG_TEXT_PADDING +
+      SVG_MAIN_FONT_SIZE * 2 +
+      SVG_TEXT_PADDING,
+    randomSeed: idNum,
+  });
 
   return `
-    <svg width="134" height="180" viewBox="0 0 134 134" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="${SVG_WIDTH}" height="${SVG_HEIGHT}" viewBox="0 0 ${SVG_WIDTH} ${SVG_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+    <rect fill="#101010" width="${SVG_WIDTH}" height="${SVG_HEIGHT}"/>
+    <rect fill="#1D1D1D" width="${
+      SVG_WIDTH - 2 * SVG_GLOBAL_PADDING
+    }" height="${
+    SVG_HEIGHT - 2 * SVG_GLOBAL_PADDING
+  }" x="${SVG_GLOBAL_PADDING}" y="${SVG_GLOBAL_PADDING}" rx="${SVG_INNER_RECT_RADIUS}" ry="${SVG_INNER_RECT_RADIUS}" stroke="#373737" stroke-width="${SVG_INNER_RECT_STROKE_WIDTH}"/>
 
-        <circle cx="67" cy="67" r="${circleRadius}" fill="url(#paint${id.toString()}_linear_1_30)"/>
-        <path fill-rule="evenodd" clip-rule="evenodd"
-            transform="rotate(${rotateAngle}, 67, 67)"
-            d="M${rect1X} 54.0769C${rect1X} 47.9593 ${rect1X + rectWidth} 43 ${
-    rect1X + rectWidth
-  } 43H92.9C99.0304 43 104 47.9593 104 54.0769V79.9231C104 86.0407 99.0304 91 92.9 91H41.1C34.9696 91 30 86.0407 30 79.9231V54.0769ZM67 67C67 75.1568 60.3738 81.7692 52.2 81.7692C44.0262 81.7692 37.4 75.1568 37.4 67C37.4 58.8432 44.0262 52.2308 52.2 52.2308C60.3738 52.2308 67 58.8432 67 67ZM67 67C67 58.8432 73.6262 52.2308 81.8 52.2308C89.9738 52.2308 96.6 58.8432 96.6 67C96.6 75.1568 89.9738 81.7692 81.8 81.7692C73.6262 81.7692 67 75.1568 67 67Z"
-            fill="#F1F0FA"/>
+  <defs>
+    <filter id="blurFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="${164 / ratio}" />
+    </filter>
+  </defs>
 
-        <defs>
-            <linearGradient id="paint${id.toString()}_linear_1_30" x1="0" y1="0" x2="134" y2="134" gradientUnits="userSpaceOnUse">
-                <stop stop-color="${stopColor1}"/>
-                <stop offset="1" stop-color="${stopColor2}"/>
-            </linearGradient>
-        </defs>
-
-              <rect 
-        x="0"
-        y="0"
-        width="134"
-        height="180"
-        fill="#00000044"
-        rx="5"
-        ry="5"
-      />
+  <clipPath id="innerRectClip">
+    <rect 
+      x="${SVG_GLOBAL_PADDING}" 
+      y="${SVG_GLOBAL_PADDING}" 
+      width="${SVG_WIDTH - 2 * SVG_GLOBAL_PADDING}" 
+      height="${SVG_HEIGHT - 2 * SVG_GLOBAL_PADDING}" 
+      rx="${SVG_INNER_RECT_RADIUS}" 
+      ry="${SVG_INNER_RECT_RADIUS}"
+    />
+  </clipPath>
 
 
-        <text x="10" y="15" font-size="10" fill="white">
-          isFullRange: ${isFullRange}
+
+  <g clip-path="url(#innerRectClip)">
+  <circle cx="${SVG_WIDTH / 5}" cy="${0}" r="${
+    SVG_WIDTH / 2.5
+  }" fill="#661CC466" filter="url(#blurFilter)"/>
+
+  <circle cx="${SVG_WIDTH / 1.2}" cy="${SVG_HEIGHT * 0.9}" r="${
+    SVG_WIDTH / 2
+  }" fill="#EB1E7466" filter="url(#blurFilter)"/>
+  </g>
+
+
+    ${circles}
+
+        <text x=${SVG_GLOBAL_PADDING + SVG_TEXT_PADDING} y=${
+    SVG_GLOBAL_PADDING + SVG_TEXT_PADDING + SVG_MAIN_FONT_SIZE
+  } font-size="${SVG_MAIN_FONT_SIZE}" font-weight="700" fill="white">
+          ${positionMetadata.token0Symbol} / ${positionMetadata.token1Symbol}
         </text>
-        <text x="10" y="30" font-size="10" fill="white">
-          extension: ${positionMetadata.extension}
+
+        <text x=${SVG_GLOBAL_PADDING + SVG_TEXT_PADDING} y=${
+    SVG_GLOBAL_PADDING + SVG_TEXT_PADDING + SVG_MAIN_FONT_SIZE * 2
+  } font-size="${SVG_MAIN_FONT_SIZE}" font-weight="700" fill="white">
+          ${formattedFeePercent}%
+          <tspan fill="#878787" font-size="${SVG_SMALLER_FONT_SIZE}">
+            ${formattedTickSpacingPercent}%
+          </tspan>
         </text>
-        <text x="10" y="45" font-size="10" fill="white">
-          Lower tick: ${positionMetadata.lower_bound}
-        </text>
-        <text x="10" y="60" font-size="10" fill="white">
-          Upper tick: ${positionMetadata.upper_bound}
-        </text>
-        <text x="10" y="75" font-size="10" fill="white">
-          token0: ${positionMetadata.token0Symbol}
-        </text>
-        <text x="10" y="90" font-size="10" fill="white">
-          token1: ${positionMetadata.token1Symbol}
-        </text>
-        <text x="10" y="105" font-size="10" fill="white">
-          token0 address: ${positionMetadata.token0Address}
-        </text>
-        <text x="10" y="120" font-size="10" fill="white">
-          token1 address: ${positionMetadata.token1Address}
-        </text>
-        <text x="10" y="135" font-size="10" fill="white">
-          Tick Spacing: ${formattedTickSpacingPercent}%
-        </text>
-        <text x="10" y="150" font-size="10" fill="white">
-          Fee: ${formattedFeePercent}%
-        </text>
+
+
+        ${
+          positionMetadata.extension !== undefined
+            ? `<text x="${
+                SVG_GLOBAL_PADDING + SVG_TEXT_PADDING
+              }" y="235" font-size="${SVG_MAIN_FONT_SIZE}" fill="white" font-weight="500">
+          ${positionMetadata.extension}
+        </text>`
+            : ""
+        }
+
     </svg>
     `;
 }
+
+// <text x="10" y="230" font-size="10" fill="white">
+//   Upper tick: ${positionMetadata.upper_bound}
+// </text>
+// <text x="10" y="250" font-size="10" fill="white">
+//   Lower tick: ${positionMetadata.lower_bound}
+// </text>

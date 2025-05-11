@@ -65,7 +65,7 @@ export const SVG_EXAMPLES = [
         fee: "9223372036854775",
         tick_spacing: "0",
 
-        extension: "TWAMM",
+        extension: "DCA",
 
         minted_timestamp: "1742502815000",
       },
@@ -89,7 +89,7 @@ export const SVG_EXAMPLES = [
         fee: "0",
         tick_spacing: "0",
 
-        extension: "ORACLE",
+        extension: "Oracle",
 
         minted_timestamp: "1742502815000",
       },
