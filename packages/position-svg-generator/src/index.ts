@@ -8,15 +8,11 @@ interface PositionMetadata {
 
   token0Symbol: string;
   token1Symbol: string;
-  token0Address: string;
-  token1Address: string;
 
   fee: string;
   tick_spacing: string;
 
   extension?: "DCA" | "Oracle" | "UNKNOWN";
-
-  minted_timestamp: string;
 }
 
 const ratio = 4;
@@ -25,13 +21,16 @@ const SVG_WIDTH = 1_000 / ratio;
 const SVG_HEIGHT = 1_000 / ratio;
 
 const SVG_GLOBAL_PADDING = 30 / ratio;
-const SVG_TEXT_PADDING = 42 / ratio;
+const SVG_TEXT_X_PADDING = 42 / ratio;
+const SVG_TEXT_Y_PADDING = 22 / ratio;
 
 const SVG_MAIN_FONT_SIZE = 94 / ratio;
 const SVG_SMALLER_FONT_SIZE = 64 / ratio;
 
 const SVG_INNER_RECT_RADIUS = 18 / ratio;
 const SVG_INNER_RECT_STROKE_WIDTH = 1 / ratio;
+
+const SVG_BOUNDS_FONT_SIZE = 34 / ratio;
 
 export function generateSvg(
   id: bigint,
@@ -51,10 +50,7 @@ export function generateSvg(
   const formattedTickSpacingPercent = spacingToPercent(
     Number(positionMetadata.tick_spacing)
   );
-  const isFullRange =
-    Number(positionMetadata.tick_spacing) === 0 &&
-    positionMetadata.extension === undefined;
-
+  const isFullRange = Number(positionMetadata.tick_spacing) === 0;
   // Generate random parameters
   const circles = generateGridSVGCircles({
     canvasWidth:
@@ -62,9 +58,9 @@ export function generateSvg(
     xOffset: SVG_GLOBAL_PADDING + SVG_INNER_RECT_STROKE_WIDTH,
     yOffset:
       SVG_GLOBAL_PADDING +
-      SVG_TEXT_PADDING +
+      SVG_TEXT_Y_PADDING * 1.5 +
       SVG_MAIN_FONT_SIZE * 2 +
-      SVG_TEXT_PADDING,
+      SVG_TEXT_Y_PADDING,
     randomSeed: idNum,
     fgColor1: [102, 28, 196, 1],
     fgColor2:
@@ -75,6 +71,8 @@ export function generateSvg(
         : isFullRange
         ? [38, 232, 173, 1]
         : [235, 30, 116, 1],
+    targetBigPercentage: 0.3,
+    targetMediumPercentage: 0.35,
   });
 
   return `
@@ -88,7 +86,7 @@ export function generateSvg(
 
   <defs>
     <filter id="blurFilter" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="${164 / ratio}" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="${120 / ratio}" />
     </filter>
   </defs>
 
@@ -112,45 +110,71 @@ export function generateSvg(
 
   <circle cx="${SVG_WIDTH / 1.2}" cy="${SVG_HEIGHT * 0.9}" r="${
     SVG_WIDTH / 2
-  }" fill="#9D5AF266" filter="url(#blurFilter)"/>
+  }" fill="${
+    positionMetadata.extension === "DCA"
+      ? "#9D5AF266"
+      : positionMetadata.extension === "Oracle"
+      ? "#DF7B3266"
+      : isFullRange
+      ? "#26E8AD66"
+      : "#EB1E7466"
+  }" filter="url(#blurFilter)"/>
   </g>
 
 
     ${circles}
 
-        <text x=${SVG_GLOBAL_PADDING + SVG_TEXT_PADDING} y=${
-    SVG_GLOBAL_PADDING + SVG_TEXT_PADDING + SVG_MAIN_FONT_SIZE
+        <text x=${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING} y=${
+    SVG_GLOBAL_PADDING + SVG_TEXT_Y_PADDING + SVG_MAIN_FONT_SIZE
   } font-size="${SVG_MAIN_FONT_SIZE}" font-weight="700" fill="white">
           ${positionMetadata.token0Symbol} / ${positionMetadata.token1Symbol}
         </text>
 
-        <text x=${SVG_GLOBAL_PADDING + SVG_TEXT_PADDING} y=${
-    SVG_GLOBAL_PADDING + SVG_TEXT_PADDING + SVG_MAIN_FONT_SIZE * 2
+        <text x=${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING} y=${
+    SVG_GLOBAL_PADDING + SVG_TEXT_Y_PADDING + SVG_MAIN_FONT_SIZE * 2
   } font-size="${SVG_MAIN_FONT_SIZE}" font-weight="700" fill="white">
           ${formattedFeePercent}%
-          <tspan fill="#878787" font-size="${SVG_SMALLER_FONT_SIZE}">
+          ${
+            !isFullRange
+              ? `<tspan fill="#878787" font-size="${SVG_SMALLER_FONT_SIZE}">
             ${formattedTickSpacingPercent}%
-          </tspan>
+          </tspan>`
+              : ""
+          }
         </text>
 
 
         ${
-          positionMetadata.extension !== undefined
+          positionMetadata.extension !== undefined || isFullRange
             ? `<text x="${
-                SVG_GLOBAL_PADDING + SVG_TEXT_PADDING
-              }" y="235" font-size="${SVG_MAIN_FONT_SIZE}" fill="white" font-weight="500">
-          ${positionMetadata.extension}
+                SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING
+              }" y="232" font-size="${SVG_MAIN_FONT_SIZE}" fill="white" font-weight="500">
+          ${positionMetadata.extension ?? "Full-range"}
         </text>`
-            : ""
+            : `
+               <text x="${
+                 SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING)
+               }" y="222" fill="#B1AFAF" font-weight="500" text-anchor="end" font-size="${SVG_BOUNDS_FONT_SIZE}">
+               Min price: <tspan fill="white">1,123 ETH / USDC</tspan>
+               </text>
+
+               <text x="${
+                 SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING)
+               }" y="${
+                224 + SVG_BOUNDS_FONT_SIZE
+              }" fill="#B1AFAF" font-weight="500" text-anchor="end" font-size="${SVG_BOUNDS_FONT_SIZE}">
+               Min price: <tspan fill="white">1,123 ETH / USDC</tspan>
+               </text>
+            `
         }
 
     </svg>
     `;
 }
 
-// <text x="10" y="230" font-size="10" fill="white">
+// <text x="10" y="230" font-size="10" fill="white" text-anchor="end">
 //   Upper tick: ${positionMetadata.upper_bound}
 // </text>
-// <text x="10" y="250" font-size="10" fill="white">
+// <text x="10" y="250" font-size="10" fill="white" text-anchor="end">
 //   Lower tick: ${positionMetadata.lower_bound}
 // </text>
