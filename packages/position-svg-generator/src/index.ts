@@ -3,8 +3,8 @@ import { shortenAddress } from "./util/format";
 import { generateGridSVGCircles } from "./generateCircles";
 
 interface PositionMetadata {
-  token0Address?: string;
-  token1Address?: string;
+  token0Address: string;
+  token1Address: string;
 
   token0Symbol?: string;
   token1Symbol?: string;
@@ -300,8 +300,8 @@ export function generateSvg(
   </g>
 
         <text
-        x=${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}
-        y=${SVG_GLOBAL_PADDING + SVG_TEXT_Y_PADDING + SVG_MAIN_FONT_SIZE}
+        x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
+        y="${SVG_GLOBAL_PADDING + SVG_TEXT_Y_PADDING + SVG_MAIN_FONT_SIZE}"
         font-size="${SVG_MAIN_FONT_SIZE}"
         font-weight="700"
         fill="white"
@@ -318,10 +318,9 @@ export function generateSvg(
         </text>
 
         <text
-        x=${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}
-        y=${
-          SVG_GLOBAL_PADDING + SVG_TEXT_Y_PADDING + SVG_MAIN_FONT_SIZE * 2
-        } font-size="${SVG_MAIN_FONT_SIZE}"
+        x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
+        y="${SVG_GLOBAL_PADDING + SVG_TEXT_Y_PADDING + SVG_MAIN_FONT_SIZE * 2}"
+        font-size="${SVG_MAIN_FONT_SIZE}"
         font-weight="700"
         fill="white">
           ${positionMetadata.formattedFeePercent}
