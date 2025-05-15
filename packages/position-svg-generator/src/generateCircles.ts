@@ -7,15 +7,15 @@ const GRID_SETTINGS = [
 
 export function generateGridSVGCircles({
   canvasWidth,
-  fgColor1 = [0, 0, 0, 1] as [number, number, number, number],
-  fgColor2 = [0, 255, 0, 1] as [number, number, number, number],
+  fgColor1,
+  fgColor2,
   randomSeed = 42,
   xOffset = 0,
   yOffset = 0,
 }: {
   canvasWidth: number;
-  fgColor1?: [number, number, number, number];
-  fgColor2?: [number, number, number, number];
+  fgColor1: [number, number, number, number];
+  fgColor2: [number, number, number, number];
   randomSeed?: number;
   xOffset?: number;
   yOffset?: number;

@@ -69,7 +69,12 @@ export function generateSvg(
       SVG_GLOBAL_PADDING +
       SVG_TEXT_Y_PADDING * 1.5 +
       SVG_MAIN_FONT_SIZE * 2 +
-      SVG_TEXT_Y_PADDING,
+      SVG_TEXT_Y_PADDING +
+      ((positionMetadata.token0Symbol === undefined ||
+        positionMetadata.token1Symbol === undefined) &&
+      positionMetadata.type === undefined
+        ? SVG_HEIGHT / 16
+        : 0),
     randomSeed: idNum,
     fgColor1: [102, 28, 196, 1],
     fgColor2:
