@@ -1,20 +1,8 @@
 import prand from "pure-rand";
-import { feeToPercent, spacingToPercent } from "./util/format";
+import { feeToPercent, shortenAddress, spacingToPercent } from "./util/format";
 import { generateGridSVGCircles } from "./generateCircles";
 
-export function shortenAddress(address: string) {
-  if (!address.startsWith("0x")) address = `0x${BigInt(address).toString(16)}`;
-  return (
-    address.slice(0, 4) +
-    "\u2026" +
-    address.slice(address.length - 2, address.length)
-  );
-}
-
 interface PositionMetadata {
-  lower_bound: string;
-  upper_bound: string;
-
   token0Address?: string;
   token1Address?: string;
 
@@ -24,10 +12,13 @@ interface PositionMetadata {
   token0Src?: string;
   token1Src?: string;
 
-  fee: string;
-  tick_spacing: string;
+  formattedFeePercent: string;
+  formattedTickSpacingPercent: string;
 
-  extension?: "DCA" | "Oracle" | "UNKNOWN";
+  formattedMinPrice: string;
+  formattedMaxPrice: string;
+
+  type?: "DCA" | "Oracle" | "Full-range";
 }
 
 const ratio = 4;
@@ -45,7 +36,7 @@ const SVG_SMALLER_FONT_SIZE = 64 / ratio;
 const SVG_INNER_RECT_RADIUS = 18 / ratio;
 const SVG_INNER_RECT_STROKE_WIDTH = 1 / ratio;
 
-const SVG_BOUNDS_FONT_SIZE = 34 / ratio;
+const SVG_BOUNDS_FONT_SIZE = 36 / ratio;
 
 const SVG_IMAGE_STROKE_WIDTH = 10 / ratio;
 const SVG_IMAGE_SIZE = SVG_MAIN_FONT_SIZE;
@@ -69,11 +60,6 @@ export function generateSvg(
   const randomIn = (min: number, max: number) =>
     prand.unsafeUniformIntDistribution(min, max, generator);
 
-  const formattedFeePercent = feeToPercent(BigInt(positionMetadata.fee));
-  const formattedTickSpacingPercent = spacingToPercent(
-    Number(positionMetadata.tick_spacing)
-  );
-  const isFullRange = Number(positionMetadata.tick_spacing) === 0;
   // Generate random parameters
   const circles = generateGridSVGCircles({
     canvasWidth:
@@ -87,11 +73,11 @@ export function generateSvg(
     randomSeed: idNum,
     fgColor1: [102, 28, 196, 1],
     fgColor2:
-      positionMetadata.extension === "Oracle"
+      positionMetadata.type === "Oracle"
         ? [223, 123, 50, 1]
-        : positionMetadata.extension === "DCA"
+        : positionMetadata.type === "DCA"
         ? [157, 90, 242, 1]
-        : isFullRange
+        : positionMetadata.type === "Full-range"
         ? [38, 232, 173, 1]
         : [235, 30, 116, 1],
   });
@@ -298,11 +284,11 @@ export function generateSvg(
   <circle cx="${SVG_WIDTH / 1.2}" cy="${SVG_HEIGHT * 0.9}" r="${
     SVG_WIDTH / 2
   }" fill="${
-    positionMetadata.extension === "DCA"
+    positionMetadata.type === "DCA"
       ? "#9D5AF266"
-      : positionMetadata.extension === "Oracle"
+      : positionMetadata.type === "Oracle"
       ? "#DF7B3266"
-      : isFullRange
+      : positionMetadata.type === "Full-range"
       ? "#26E8AD66"
       : "#EB1E7466"
   }" filter="url(#blurFilter)"/>
@@ -333,11 +319,11 @@ export function generateSvg(
         } font-size="${SVG_MAIN_FONT_SIZE}"
         font-weight="700"
         fill="white">
-          ${formattedFeePercent}%
+          ${positionMetadata.formattedFeePercent}
           ${
-            !isFullRange
+            positionMetadata.type === undefined
               ? `<tspan fill="#878787" font-size="${SVG_SMALLER_FONT_SIZE}">
-            ${formattedTickSpacingPercent}%
+            ${positionMetadata.formattedTickSpacingPercent}
           </tspan>`
               : ""
           }
@@ -349,7 +335,7 @@ export function generateSvg(
 
 
         ${
-          positionMetadata.extension !== undefined || isFullRange
+          positionMetadata.type !== undefined
             ? `<text
                  x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
                  y="232"
@@ -357,7 +343,7 @@ export function generateSvg(
                  fill="white"
                  font-weight="500"
                >
-                ${positionMetadata.extension ?? "Full-range"}
+                ${positionMetadata.type}
               </text>`
             : positionMetadata.token0Symbol && positionMetadata.token1Symbol
             ? `
@@ -369,9 +355,9 @@ export function generateSvg(
                 text-anchor="end"
                 font-size="${SVG_BOUNDS_FONT_SIZE}"
               >
-                Min price: <tspan fill="white">1,123 ${
-                  positionMetadata.token0Symbol
-                } / ${positionMetadata.token1Symbol}</tspan>
+                Min price: <tspan fill="white">${
+                  positionMetadata.formattedMinPrice
+                }</tspan>
               </text>
 
               <text
@@ -382,7 +368,9 @@ export function generateSvg(
                 text-anchor="end"
                 font-size="${SVG_BOUNDS_FONT_SIZE}"
               >
-                Min price: <tspan fill="white">1,123 ETH / USDC</tspan>
+                Max price: <tspan fill="white">${
+                  positionMetadata.formattedMaxPrice
+                }</tspan>
               </text>
             `
             : ""
@@ -391,10 +379,3 @@ export function generateSvg(
     </svg>
     `;
 }
-
-// <text x="10" y="230" font-size="10" fill="white" text-anchor="end">
-//   Upper tick: ${positionMetadata.upper_bound}
-// </text>
-// <text x="10" y="250" font-size="10" fill="white" text-anchor="end">
-//   Lower tick: ${positionMetadata.lower_bound}
-// </text>

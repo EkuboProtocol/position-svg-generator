@@ -4,9 +4,6 @@ export const SVG_EXAMPLES = [
     args: [
       "1",
       {
-        lower_bound: "20045000",
-        upper_bound: "20037000",
-
         token0Symbol: "ETH",
         token1Symbol: "USDC",
 
@@ -18,12 +15,13 @@ export const SVG_EXAMPLES = [
         token1Src:
           "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
 
-        fee: "9223372036854775",
-        tick_spacing: "1000",
+        formattedFeePercent: "0.001%",
+        formattedTickSpacingPercent: "0.001%",
 
-        extension: undefined,
+        formattedMinPrice: "1,123 ETH / USDC",
+        formattedMaxPrice: "1,123 ETH / USDC",
 
-        minted_timestamp: "1742502815000",
+        type: undefined,
       },
     ],
   },
@@ -32,9 +30,6 @@ export const SVG_EXAMPLES = [
     args: [
       "1",
       {
-        lower_bound: "-88722835",
-        upper_bound: "88722835",
-
         token0Symbol: "ETH",
         token1Symbol: "USDC",
 
@@ -46,15 +41,14 @@ export const SVG_EXAMPLES = [
         token1Src:
           "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
 
-        fee: "9223372036854775",
-        tick_spacing: "0",
+        formattedFeePercent: "0.001%",
+        formattedTickSpacingPercent: "0%",
 
-        extension: undefined,
+        formattedMinPrice: "1,123 ETH / USDC",
+        formattedMaxPrice: "1,123 ETH / USDC",
 
-        minted_timestamp: "1742502815000",
+        type: "Full-range",
       },
-      "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
-      "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
     ],
   },
   {
@@ -62,9 +56,6 @@ export const SVG_EXAMPLES = [
     args: [
       "11155111",
       {
-        lower_bound: "-88722835",
-        upper_bound: "88722835",
-
         token0Symbol: "ETH",
         token1Symbol: "USDC",
 
@@ -76,15 +67,14 @@ export const SVG_EXAMPLES = [
         token1Src:
           "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
 
-        fee: "9223372036854775",
-        tick_spacing: "0",
+        formattedFeePercent: "0.001%",
+        formattedTickSpacingPercent: "0%",
 
-        extension: "DCA",
+        formattedMinPrice: "1,123 ETH / USDC",
+        formattedMaxPrice: "1,123 ETH / USDC",
 
-        minted_timestamp: "1742502815000",
+        type: "DCA",
       },
-      "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
-      "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
     ],
   },
   {
@@ -92,9 +82,6 @@ export const SVG_EXAMPLES = [
     args: [
       "1",
       {
-        lower_bound: "-88722835",
-        upper_bound: "88722835",
-
         token0Symbol: "ETH",
         token1Symbol: "EKUBO",
 
@@ -106,12 +93,13 @@ export const SVG_EXAMPLES = [
         token1Src:
           "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/634d9c36-2f0b-4781-93e6-72d701b5af00/logo",
 
-        fee: "0",
-        tick_spacing: "0",
+        formattedFeePercent: "0%",
+        formattedTickSpacingPercent: "0%",
 
-        extension: "Oracle",
+        formattedMinPrice: "1,123 ETH / USDC",
+        formattedMaxPrice: "1,123 ETH / USDC",
 
-        minted_timestamp: "1742502815000",
+        type: "Oracle",
       },
     ],
   },
