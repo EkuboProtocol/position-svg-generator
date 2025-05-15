@@ -1,5 +1,5 @@
 import prand from "pure-rand";
-import { feeToPercent, shortenAddress, spacingToPercent } from "./util/format";
+import { shortenAddress } from "./util/format";
 import { generateGridSVGCircles } from "./generateCircles";
 
 interface PositionMetadata {
