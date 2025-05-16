@@ -1,6 +1,7 @@
 import prand from "pure-rand";
 import { shortenAddress } from "./util/format";
 import { generateGridSVGCircles } from "./generateCircles";
+import { suisseIntlMediumBase64 } from "./fonts";
 
 interface PositionMetadata {
   token0Address: string;
@@ -41,16 +42,53 @@ const SVG_BOUNDS_FONT_SIZE = 36 / ratio;
 const SVG_IMAGE_STROKE_WIDTH = 10 / ratio;
 const SVG_IMAGE_SIZE = SVG_MAIN_FONT_SIZE;
 
-const SVG_IMAGE_Y_OFFSET = SVG_MAIN_FONT_SIZE * 0.12;
+const SVG_IMAGE_Y_OFFSET = SVG_MAIN_FONT_SIZE * 0.13;
 
 const SVG_GRADIENT_GRADIENT_RECT_WIDTH = 300 / ratio;
-const SVG_GRADIENT_GRADIENT_RECT_HEIGHT = 137 / ratio;
+const SVG_GRADIENT_GRADIENT_RECT_HEIGHT = 140 / ratio;
 
-export function generateSvg(
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+async function urlToBase64(url: string): Promise<string> {
+  const response = await fetch(url);
+  const arrayBuffer = await response.arrayBuffer();
+  const base64 = arrayBufferToBase64(arrayBuffer);
+  const mime =
+    response.headers.get("content-type") || "application/octet-stream";
+  return `data:${mime};base64,${base64}`;
+}
+
+function renderStyles() {
+  return `
+  <style type="text/css">
+    @font-face {
+      font-family: 'SuisseIntl';
+      src: url('${suisseIntlMediumBase64}') format('woff2');
+      font-weight: 500
+    }
+
+    text {
+      font-family: 'SuisseIntl';
+      font-weight: 500
+    }
+
+  </style>
+  `;
+}
+
+export async function generateSvg(
   id: bigint,
   chainId: string,
   positionMetadata: PositionMetadata
-): string {
+): Promise<string> {
   const idNum = Number(id % BigInt(Number.MAX_SAFE_INTEGER));
   let generator = prand.xoroshiro128plus(Number(chainId));
   generator = prand.xoroshiro128plus(
@@ -59,6 +97,14 @@ export function generateSvg(
 
   const randomIn = (min: number, max: number) =>
     prand.unsafeUniformIntDistribution(min, max, generator);
+
+  const token0Base64Src = positionMetadata.token0Src
+    ? await urlToBase64(positionMetadata.token0Src)
+    : undefined;
+
+  const token1Base64Src = positionMetadata.token1Src
+    ? await urlToBase64(positionMetadata.token1Src)
+    : undefined;
 
   // Generate random parameters
   const circles = generateGridSVGCircles({
@@ -160,15 +206,15 @@ export function generateSvg(
           }"
           r="${SVG_IMAGE_SIZE / 2}"
           fill="none"
-          stroke="${positionMetadata.token1Src ? "#1D1D1D" : "#9D5AF2"}"
+          stroke="${token1Base64Src ? "#1D1D1D" : "#9D5AF2"}"
           stroke-width="${SVG_IMAGE_STROKE_WIDTH}"
         />
     ${
-      positionMetadata.token1Src
+      token1Base64Src
         ? `
         
         <image
-              href="${positionMetadata.token1Src}" width="${SVG_IMAGE_SIZE}"
+              href="${token1Base64Src}" width="${SVG_IMAGE_SIZE}"
               height="${SVG_IMAGE_SIZE}"
               x="${
                 SVG_WIDTH -
@@ -212,15 +258,15 @@ export function generateSvg(
       }"
       r="${SVG_IMAGE_SIZE / 2}"
       fill="none"
-      stroke="${positionMetadata.token0Src ? "#1D1D1D" : "#9D5AF2"}"
+      stroke="${token0Base64Src ? "#1D1D1D" : "#9D5AF2"}"
       stroke-width="${SVG_IMAGE_STROKE_WIDTH}"
     />
  
     ${
-      positionMetadata.token0Src
+      token0Base64Src
         ? `
     <image
-      href="${positionMetadata.token0Src}"
+      href="${token0Base64Src}"
       width="${SVG_IMAGE_SIZE}"
       height="${SVG_IMAGE_SIZE}"
       x="${
@@ -256,6 +302,7 @@ export function generateSvg(
 
   return `
     <svg width="${SVG_WIDTH}" height="${SVG_HEIGHT}" viewBox="0 0 ${SVG_WIDTH} ${SVG_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+    ${renderStyles()}
     <rect fill="#101010" width="${SVG_WIDTH}" height="${SVG_HEIGHT}"/>
     <rect fill="#1D1D1D" width="${
       SVG_WIDTH - 2 * SVG_GLOBAL_PADDING
@@ -303,15 +350,13 @@ export function generateSvg(
         x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
         y="${SVG_GLOBAL_PADDING + SVG_TEXT_Y_PADDING + SVG_MAIN_FONT_SIZE}"
         font-size="${SVG_MAIN_FONT_SIZE}"
-        font-weight="700"
         fill="white"
         clip-path="url(#innerRectClip)"
         >
-
           ${
             positionMetadata.token0Symbol ??
             shortenAddress(positionMetadata.token0Address)
-          } / ${
+          }/${
     positionMetadata.token1Symbol ??
     shortenAddress(positionMetadata.token1Address)
   }
@@ -321,7 +366,6 @@ export function generateSvg(
         x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
         y="${SVG_GLOBAL_PADDING + SVG_TEXT_Y_PADDING + SVG_MAIN_FONT_SIZE * 2}"
         font-size="${SVG_MAIN_FONT_SIZE}"
-        font-weight="700"
         fill="white">
           ${positionMetadata.formattedFeePercent}
           ${
@@ -333,29 +377,26 @@ export function generateSvg(
           }
         </text>
 
-        ${renderTokenImages()}
+  ${renderTokenImages()}
+  ${circles}
 
-    ${circles}
 
-
-        ${
-          positionMetadata.type !== undefined
-            ? `<text
+  ${
+    positionMetadata.type !== undefined
+      ? `<text
                  x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
                  y="232"
                  font-size="${SVG_MAIN_FONT_SIZE}"
                  fill="white"
-                 font-weight="500"
                >
                 ${positionMetadata.type}
               </text>`
-            : positionMetadata.token0Symbol && positionMetadata.token1Symbol
-            ? `
+      : positionMetadata.token0Symbol && positionMetadata.token1Symbol
+      ? `
               <text 
                 x="${SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING)}"
                 y="222"
                 fill="#B1AFAF"
-                font-weight="500"
                 text-anchor="end"
                 font-size="${SVG_BOUNDS_FONT_SIZE}"
               >
@@ -368,7 +409,6 @@ export function generateSvg(
                 x="${SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING)}"
                 y="${224 + SVG_BOUNDS_FONT_SIZE}"
                 fill="#B1AFAF"
-                font-weight="500"
                 text-anchor="end"
                 font-size="${SVG_BOUNDS_FONT_SIZE}"
               >
@@ -377,8 +417,8 @@ export function generateSvg(
                 }</tspan>
               </text>
             `
-            : ""
-        }
+      : ""
+  }
 
     </svg>
     `;

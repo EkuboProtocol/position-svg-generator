@@ -1,6 +1,9 @@
+"use client";
+
 import { generateSvg } from "@ekubo/position-svg-generator";
 import { SVG_EXAMPLES } from "./constants/examples";
-import { Fragment } from "react";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 function randomBigIntFromBytes(byteLength: number) {
   const buf = new Uint8Array(byteLength);
@@ -26,6 +29,7 @@ const METADATA_OVERRIDES = [
   {
     token0Symbol: undefined,
     token0Src: undefined,
+    token0Address: "0Xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
 
     token1Symbol: undefined,
     token1Src: undefined,
@@ -33,7 +37,43 @@ const METADATA_OVERRIDES = [
   }, // Two unknown token
 ] as const;
 
+function SVG({
+  tokenId,
+  chainId,
+  args,
+}: {
+  tokenId: bigint;
+  chainId: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  args: any;
+}) {
+  const { data: svgString } = useQuery({
+    queryFn: async () => {
+      const result = await generateSvg(tokenId, chainId, args);
+      return result;
+    },
+    queryKey: [tokenId.toString()],
+  });
+
+  if (!svgString) {
+    return (
+      <div
+        style={{ height: "250px", width: "250px", background: "#101010" }}
+      ></div>
+    );
+  }
+
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: svgString,
+      }}
+    />
+  );
+}
+
 function App() {
+  useEffect(() => {}, []);
   return (
     <div
       style={{
@@ -72,7 +112,6 @@ function App() {
                   style={{
                     marginTop: "1rem",
                     display: "grid",
-
                     gridTemplateColumns:
                       "repeat(auto-fit, minmax(16rem , 1fr))",
                     gap: "3rem",
@@ -86,17 +125,12 @@ function App() {
                         METADATA_OVERRIDES[index % METADATA_OVERRIDES.length];
 
                       return (
-                        <Fragment key={index}>
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: generateSvg(
-                                randomTokenId,
-                                example.args[0],
-                                { ...example.args[1], ...override }
-                              ),
-                            }}
-                          />
-                        </Fragment>
+                        <SVG
+                          key={index}
+                          tokenId={randomTokenId}
+                          chainId={example.args[0]}
+                          args={{ ...example.args[1], ...override }}
+                        />
                       );
                     })}
                 </div>

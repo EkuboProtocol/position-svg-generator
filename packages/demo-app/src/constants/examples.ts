@@ -8,7 +8,7 @@ export const SVG_EXAMPLES = [
         token1Symbol: "USDC",
 
         token0Address: "0x0000000000000000000000000000000000000000",
-        token1Address: "0Xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        token1Address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
 
         token0Src:
           "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
@@ -34,7 +34,7 @@ export const SVG_EXAMPLES = [
         token1Symbol: "USDC",
 
         token0Address: "0x0000000000000000000000000000000000000000",
-        token1Address: "0Xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        token1Address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
 
         token0Src:
           "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
@@ -60,7 +60,7 @@ export const SVG_EXAMPLES = [
         token1Symbol: "USDC",
 
         token0Address: "0x0000000000000000000000000000000000000000",
-        token1Address: "0Xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        token1Address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
 
         token0Src:
           "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
@@ -86,7 +86,7 @@ export const SVG_EXAMPLES = [
         token1Symbol: "EKUBO",
 
         token0Address: "0x0000000000000000000000000000000000000000",
-        token1Address: "0X4c46e830bb56ce22735d5d8fc9cb90309317d0f",
+        token1Address: "0x4c46e830bb56ce22735d5d8fc9cb90309317d0f",
 
         token0Src:
           "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
