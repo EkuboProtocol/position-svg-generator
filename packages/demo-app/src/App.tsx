@@ -1,6 +1,6 @@
 "use client";
 
-import { generateSvg } from "@ekubo/position-svg-generator";
+import { generatePositionSvg } from "@ekubo/position-svg-generator";
 import { SVG_EXAMPLES } from "./constants/examples";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -49,7 +49,7 @@ function SVG({
 }) {
   const { data: svgString } = useQuery({
     queryFn: async () => {
-      const result = await generateSvg(tokenId, chainId, args);
+      const result = await generatePositionSvg(tokenId, chainId, args);
       return result;
     },
     queryKey: [tokenId.toString()],

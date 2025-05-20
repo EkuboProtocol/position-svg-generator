@@ -5,7 +5,7 @@ const GRID_SETTINGS = [
   [48, 28, 10, 5],
 ] as const;
 
-export function generateGridSVGCircles({
+export function renderGridCircles({
   canvasWidth,
   fgColor1,
   fgColor2,
