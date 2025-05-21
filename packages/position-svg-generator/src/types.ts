@@ -29,7 +29,7 @@ export interface DCAOrderMetadata {
 
   formattedSellAmount?: string;
   formattedStartTime: string;
-  formattedDuration: string;
+  formattedEndTime: string;
 }
 
 export interface LimitOrderMetadata {

@@ -122,8 +122,8 @@ export const SVG_DCA_ORDER_EXAMPLES = [
           "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
 
         formattedSellAmount: "1,222 ETH",
-        formattedStartTime: "1pm UTC",
-        formattedDuration: "2 days",
+        formattedStartTime: "2025-05-21 14:00 UTC",
+        formattedEndTime: "2025-05-21 14:00 UTC",
       },
     ],
   },
@@ -142,8 +142,8 @@ export const SVG_DCA_ORDER_EXAMPLES = [
         buyTokenSrc: undefined,
 
         formattedSellAmount: "1,222 ETH",
-        formattedStartTime: "1pm UTC",
-        formattedDuration: "2 days",
+        formattedStartTime: "2025-05-21 14:00 UTC",
+        formattedEndTime: "2025-05-21 14:00 UTC",
       },
     ],
   },
@@ -162,8 +162,8 @@ export const SVG_DCA_ORDER_EXAMPLES = [
           "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
 
         formattedSellAmount: undefined,
-        formattedStartTime: "1pm UTC",
-        formattedDuration: "2 days",
+        formattedStartTime: "2025-05-21 14:00 UTC",
+        formattedEndTime: "2025-05-21 14:00 UTC",
       },
     ],
   },
@@ -181,8 +181,8 @@ export const SVG_DCA_ORDER_EXAMPLES = [
         buyTokenSrc: undefined,
 
         formattedSellAmount: undefined,
-        formattedStartTime: "1pm UTC",
-        formattedDuration: "2 days",
+        formattedStartTime: "2025-05-21 14:00 UTC",
+        formattedEndTime: "2025-05-21 14:00 UTC",
       },
     ],
   },

@@ -50,6 +50,6 @@ export function renderDCAOrderNftFooter(orderMetadata: DCAOrderMetadata) {
         text-anchor="end"
         font-size="${SVG_BOUNDS_FONT_SIZE}"
       >
-        Duration: <tspan fill="white">${orderMetadata.formattedDuration}</tspan>
+        End time: <tspan fill="white">${orderMetadata.formattedEndTime}</tspan>
       </text>`;
 }
