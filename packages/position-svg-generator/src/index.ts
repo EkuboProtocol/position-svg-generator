@@ -4,10 +4,8 @@ import { urlToBase64 } from "./util/base64";
 import { renderStyles } from "./renderers/renderStyles";
 import { renderGridCircles } from "./renderers/renderGridCircles";
 import {
-  SVG_BOUNDS_FONT_SIZE,
   SVG_GLOBAL_PADDING,
   SVG_HEIGHT,
-  SVG_INNER_RECT_RADIUS,
   SVG_INNER_RECT_STROKE_WIDTH,
   SVG_MAIN_FONT_SIZE,
   SVG_SMALLER_FONT_SIZE,
@@ -17,10 +15,16 @@ import {
 } from "./constants/svg";
 import { renderDefs } from "./renderers/renderDefs";
 import { renderTokenImages } from "./renderers/renderTokenImages";
-import { PositionMetadata } from "./types";
+import {
+  DCAOrderMetadata,
+  LimitOrderMetadata,
+  PositionMetadata,
+} from "./types";
 import { renderGradientCircles } from "./renderers/renderGradientCircles";
 import { renderBackgroundSquares } from "./renderers/renderBackgroundSquares";
 import { renderPositionNftFooter } from "./renderers/renderPositionNftFooter";
+import { renderDCAOrderNftFooter } from "./renderers/renderDCAOrderNftFooter";
+import { renderLimitOrderNftFooter } from "./renderers/renderLimitOrderNftFooter";
 
 export async function generatePositionSvg(
   id: bigint,
@@ -49,7 +53,7 @@ export async function generatePositionSvg(
       ${renderStyles()}
       ${renderDefs()}
       ${renderBackgroundSquares()}
-      ${renderGradientCircles(positionMetadata)}
+      ${renderGradientCircles(positionMetadata.type)}
 
       <text
         x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
@@ -110,4 +114,162 @@ export async function generatePositionSvg(
       })}
       ${renderPositionNftFooter(positionMetadata)}
     </svg>`;
+}
+
+export async function generateDCAOrderSvg(
+  id: bigint,
+  chainId: string,
+  orderMetadata: DCAOrderMetadata
+) {
+  const idNum = Number(id % BigInt(Number.MAX_SAFE_INTEGER));
+  let generator = prand.xoroshiro128plus(Number(chainId));
+  generator = prand.xoroshiro128plus(
+    idNum + prand.unsafeUniformIntDistribution(0, 2 ** 32 - idNum, generator)
+  );
+
+  const sellTokenBase64Src = orderMetadata.sellTokenSrc
+    ? await urlToBase64(orderMetadata.sellTokenSrc)
+    : undefined;
+
+  const buyTokenBase64Src = orderMetadata.buyTokenSrc
+    ? await urlToBase64(orderMetadata.buyTokenSrc)
+    : undefined;
+
+  return `
+    <svg width="${SVG_WIDTH}" height="${SVG_HEIGHT}" viewBox="0 0 ${SVG_WIDTH} ${SVG_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+      ${renderStyles()}
+      ${renderDefs()}
+      ${renderBackgroundSquares()}
+      ${renderGradientCircles("DCA")}
+
+      <text
+        x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
+        y="${SVG_GLOBAL_PADDING + SVG_TEXT_Y_PADDING + SVG_MAIN_FONT_SIZE}"
+        font-size="${SVG_MAIN_FONT_SIZE}"
+        fill="white"
+        clip-path="url(#innerRectClip)"
+      >
+        DCA Order
+      </text>
+
+      <text
+        x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
+        y="${
+          SVG_GLOBAL_PADDING +
+          SVG_TEXT_Y_PADDING * 1.5 +
+          SVG_MAIN_FONT_SIZE +
+          SVG_SMALLER_FONT_SIZE
+        }"
+        fill="#878787"
+        font-size="${SVG_SMALLER_FONT_SIZE}"
+      >
+        Buy ${
+          orderMetadata.buyTokenSymbol ??
+          shortenAddress(orderMetadata.buyTokenAddress)
+        } with ${
+    orderMetadata.sellTokenSymbol ??
+    shortenAddress(orderMetadata.sellTokenAddress)
+  }
+      </text>
+
+
+      ${renderTokenImages({
+        token0Base64Src: sellTokenBase64Src,
+        token1Base64Src: buyTokenBase64Src,
+      })}
+      ${renderGridCircles({
+        canvasWidth:
+          SVG_WIDTH - 2 * SVG_GLOBAL_PADDING - 2 * SVG_INNER_RECT_STROKE_WIDTH,
+        xOffset: SVG_GLOBAL_PADDING + SVG_INNER_RECT_STROKE_WIDTH,
+        yOffset:
+          SVG_GLOBAL_PADDING +
+          SVG_TEXT_Y_PADDING * 1.5 +
+          SVG_MAIN_FONT_SIZE * 2 +
+          SVG_TEXT_Y_PADDING,
+        randomSeed: idNum,
+        fgColor1: [102, 28, 196, 1],
+        fgColor2: [157, 90, 242, 1],
+      })}
+      ${renderDCAOrderNftFooter(orderMetadata)}
+    </svg>
+  `;
+}
+
+export async function generateLimitOrderSvg(
+  id: bigint,
+  chainId: string,
+  orderMetadata: LimitOrderMetadata
+) {
+  const idNum = Number(id % BigInt(Number.MAX_SAFE_INTEGER));
+  let generator = prand.xoroshiro128plus(Number(chainId));
+  generator = prand.xoroshiro128plus(
+    idNum + prand.unsafeUniformIntDistribution(0, 2 ** 32 - idNum, generator)
+  );
+
+  const sellTokenBase64Src = orderMetadata.sellTokenSrc
+    ? await urlToBase64(orderMetadata.sellTokenSrc)
+    : undefined;
+
+  const buyTokenBase64Src = orderMetadata.buyTokenSrc
+    ? await urlToBase64(orderMetadata.buyTokenSrc)
+    : undefined;
+
+  return `
+    <svg width="${SVG_WIDTH}" height="${SVG_HEIGHT}" viewBox="0 0 ${SVG_WIDTH} ${SVG_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+      ${renderStyles()}
+      ${renderDefs()}
+      ${renderBackgroundSquares()}
+      ${renderGradientCircles(undefined)}
+
+      <text
+        x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
+        y="${SVG_GLOBAL_PADDING + SVG_TEXT_Y_PADDING + SVG_MAIN_FONT_SIZE}"
+        font-size="${SVG_MAIN_FONT_SIZE}"
+        fill="white"
+        clip-path="url(#innerRectClip)"
+      >
+        Limit Order
+      </text>
+
+      <text
+        x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
+        y="${
+          SVG_GLOBAL_PADDING +
+          SVG_TEXT_Y_PADDING * 1.5 +
+          SVG_MAIN_FONT_SIZE +
+          SVG_SMALLER_FONT_SIZE
+        }"
+        fill="#878787"
+        font-size="${SVG_SMALLER_FONT_SIZE}"
+      >
+        Buy ${
+          orderMetadata.buyTokenSymbol ??
+          shortenAddress(orderMetadata.buyTokenAddress)
+        } with ${
+    orderMetadata.sellTokenSymbol ??
+    shortenAddress(orderMetadata.sellTokenAddress)
+  }
+      </text>
+
+
+      ${renderTokenImages({
+        token0Base64Src: sellTokenBase64Src,
+        token1Base64Src: buyTokenBase64Src,
+      })}
+      ${renderGridCircles({
+        canvasWidth:
+          SVG_WIDTH - 2 * SVG_GLOBAL_PADDING - 2 * SVG_INNER_RECT_STROKE_WIDTH,
+        xOffset: SVG_GLOBAL_PADDING + SVG_INNER_RECT_STROKE_WIDTH,
+        yOffset:
+          SVG_GLOBAL_PADDING +
+          SVG_TEXT_Y_PADDING * 1.5 +
+          SVG_MAIN_FONT_SIZE * 2 +
+          SVG_TEXT_Y_PADDING,
+        randomSeed: idNum,
+        fgColor1: [102, 28, 196, 1],
+        fgColor2: [235, 30, 116, 1],
+      })}
+      ${renderLimitOrderNftFooter(orderMetadata)}
+    </svg>
+  `;
 }

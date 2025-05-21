@@ -20,7 +20,7 @@ export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
     : positionMetadata.token0Symbol && positionMetadata.token1Symbol
     ? `<text 
          x="${SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING)}"
-         y="222"
+         y="221"
          fill="#B1AFAF"
          text-anchor="end"
          font-size="${SVG_BOUNDS_FONT_SIZE}"
@@ -32,7 +32,7 @@ export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
 
        <text
          x="${SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING)}"
-         y="${224 + SVG_BOUNDS_FONT_SIZE}"
+         y="${225 + SVG_BOUNDS_FONT_SIZE}"
          fill="#B1AFAF"
          text-anchor="end"
          font-size="${SVG_BOUNDS_FONT_SIZE}"

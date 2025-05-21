@@ -1,4 +1,4 @@
-export const SVG_EXAMPLES = [
+export const SVG_POSITION_EXAMPLES = [
   {
     title: "Regular CL position with fees and tickspacing",
     args: [
@@ -100,6 +100,170 @@ export const SVG_EXAMPLES = [
         formattedMaxPrice: "1,123 ETH / USDC",
 
         type: "Oracle",
+      },
+    ],
+  },
+] as const;
+
+export const SVG_DCA_ORDER_EXAMPLES = [
+  {
+    args: [
+      "1",
+      {
+        sellTokenSymbol: "ETH",
+        buyTokenSymbol: "USDC",
+
+        sellTokenAddress: "0x0000000000000000000000000000000000000000",
+        buyTokenAddress: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+
+        sellTokenSrc:
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
+        buyTokenSrc:
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
+
+        formattedSellAmount: "1,222 ETH",
+        formattedStartTime: "1pm UTC",
+        formattedDuration: "2 days",
+      },
+    ],
+  },
+  {
+    args: [
+      "1",
+      {
+        sellTokenSymbol: "ETH",
+        buyTokenSymbol: undefined,
+
+        sellTokenAddress: "0x0000000000000000000000000000000000000000",
+        buyTokenAddress: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+
+        sellTokenSrc:
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
+        buyTokenSrc: undefined,
+
+        formattedSellAmount: "1,222 ETH",
+        formattedStartTime: "1pm UTC",
+        formattedDuration: "2 days",
+      },
+    ],
+  },
+  {
+    args: [
+      "1",
+      {
+        sellTokenSymbol: undefined,
+        buyTokenSymbol: "USDC",
+
+        sellTokenAddress: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        buyTokenAddress: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+
+        sellTokenSrc: undefined,
+        buyTokenSrc:
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
+
+        formattedSellAmount: undefined,
+        formattedStartTime: "1pm UTC",
+        formattedDuration: "2 days",
+      },
+    ],
+  },
+  {
+    args: [
+      "1",
+      {
+        sellTokenSymbol: undefined,
+        buyTokenSymbol: undefined,
+
+        sellTokenAddress: "0x0000000000000000000000000000000000000000",
+        buyTokenAddress: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+
+        sellTokenSrc: undefined,
+        buyTokenSrc: undefined,
+
+        formattedSellAmount: undefined,
+        formattedStartTime: "1pm UTC",
+        formattedDuration: "2 days",
+      },
+    ],
+  },
+] as const;
+
+// formattedSellAmount?: string;
+// formattedLimitPrice?: string;
+export const SVG_LIMIT_ORDER_EXAMPLES = [
+  {
+    args: [
+      "1",
+      {
+        sellTokenSymbol: "ETH",
+        buyTokenSymbol: "USDC",
+
+        sellTokenAddress: "0x0000000000000000000000000000000000000000",
+        buyTokenAddress: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+
+        sellTokenSrc:
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
+        buyTokenSrc:
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
+
+        formattedSellAmount: "1,222 ETH",
+        formattedLimitPrice: "3,354.54 USDC/ETH",
+      },
+    ],
+  },
+  {
+    args: [
+      "1",
+      {
+        sellTokenSymbol: "ETH",
+        buyTokenSymbol: undefined,
+
+        sellTokenAddress: "0x0000000000000000000000000000000000000000",
+        buyTokenAddress: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+
+        sellTokenSrc:
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
+        buyTokenSrc: undefined,
+
+        formattedSellAmount: "1,222 ETH",
+        formattedLimitPrice: undefined,
+      },
+    ],
+  },
+  {
+    args: [
+      "1",
+      {
+        sellTokenSymbol: undefined,
+        buyTokenSymbol: "USDC",
+
+        sellTokenAddress: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        buyTokenAddress: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+
+        sellTokenSrc: undefined,
+        buyTokenSrc:
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
+
+        formattedSellAmount: undefined,
+        formattedLimitPrice: undefined,
+      },
+    ],
+  },
+  {
+    args: [
+      "1",
+      {
+        sellTokenSymbol: undefined,
+        buyTokenSymbol: undefined,
+
+        sellTokenAddress: "0x0000000000000000000000000000000000000000",
+        buyTokenAddress: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+
+        sellTokenSrc: undefined,
+        buyTokenSrc: undefined,
+
+        formattedSellAmount: undefined,
+        formattedLimitPrice: undefined,
       },
     ],
   },

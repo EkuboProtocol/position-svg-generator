@@ -16,3 +16,32 @@ export interface PositionMetadata {
 
   type?: "DCA" | "Oracle" | "Full-range";
 }
+
+export interface DCAOrderMetadata {
+  sellTokenAddress: string;
+  buyTokenAddress: string;
+
+  sellTokenSymbol?: string;
+  buyTokenSymbol?: string;
+
+  sellTokenSrc?: string;
+  buyTokenSrc?: string;
+
+  formattedSellAmount?: string;
+  formattedStartTime: string;
+  formattedDuration: string;
+}
+
+export interface LimitOrderMetadata {
+  sellTokenAddress: string;
+  buyTokenAddress: string;
+
+  sellTokenSymbol?: string;
+  buyTokenSymbol?: string;
+
+  sellTokenSrc?: string;
+  buyTokenSrc?: string;
+
+  formattedSellAmount?: string;
+  formattedLimitPrice?: string;
+}
