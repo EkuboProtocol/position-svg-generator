@@ -251,7 +251,7 @@ function App() {
             width: "100%",
           }}
         >
-          <h2 style={{ marginBottom: 0, marginTop: 0 }}>DCA Orders</h2>
+          <h2 style={{ marginBottom: 0, marginTop: 0 }}>Limit Orders</h2>
 
           <div
             style={{
