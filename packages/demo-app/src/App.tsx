@@ -32,6 +32,9 @@ const POSITION_METADATA_OVERRIDES = [
     token0Symbol: undefined,
     token0Src: undefined,
     token0Address: "0x5Aa78dE756742a984027af7b870a7eC8655f789C",
+
+    formattedMinPrice: undefined,
+    formattedMaxPrice: undefined,
   }, // One unknown token
   {
     token0Symbol: undefined,
@@ -41,15 +44,20 @@ const POSITION_METADATA_OVERRIDES = [
     token1Symbol: undefined,
     token1Src: undefined,
     token1Address: "0x5Aa78dE756742a984027af7b870a7eC8655f789C",
+
+    formattedMinPrice: undefined,
+    formattedMaxPrice: undefined,
   }, // Two unknown token
 ] as const;
 
 function PositionSVG({
   tokenId,
   chainId,
+  queryKey,
   args,
 }: {
   tokenId: bigint;
+  queryKey: string;
   chainId: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   args: any;
@@ -59,7 +67,7 @@ function PositionSVG({
       const result = await generatePositionSvg(tokenId, chainId, args);
       return result;
     },
-    queryKey: [tokenId.toString()],
+    queryKey: [queryKey],
   });
 
   if (!svgString) {
@@ -198,7 +206,8 @@ function App() {
 
                       return (
                         <PositionSVG
-                          key={index}
+                          key={`${example.title}-${index}`}
+                          queryKey={`${example.title}-${index}`}
                           tokenId={randomTokenId}
                           chainId={example.args[0]}
                           args={{ ...example.args[1], ...override }}

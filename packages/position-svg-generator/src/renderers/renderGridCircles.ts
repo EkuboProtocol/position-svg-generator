@@ -1,3 +1,5 @@
+import prand from "pure-rand";
+
 const GRID_SETTINGS = [
   [12, 7, 4, 2],
   [24, 14, 6, 3],
@@ -6,13 +8,16 @@ const GRID_SETTINGS = [
 ] as const;
 
 export function renderGridCircles({
+  tokenId,
+  chainId,
   canvasWidth,
   fgColor1,
   fgColor2,
-  randomSeed = 42,
   xOffset = 0,
   yOffset = 0,
 }: {
+  tokenId: bigint;
+  chainId: string;
   canvasWidth: number;
   fgColor1: [number, number, number, number];
   fgColor2: [number, number, number, number];
@@ -20,11 +25,18 @@ export function renderGridCircles({
   xOffset?: number;
   yOffset?: number;
 }): string {
-  const rng = seedRandom(randomSeed);
+  const idNum = Number(tokenId % BigInt(Number.MAX_SAFE_INTEGER));
+  let generator = prand.xoroshiro128plus(Number(chainId));
+  generator = prand.xoroshiro128plus(
+    idNum + prand.unsafeUniformIntDistribution(0, 2 ** 32 - idNum, generator)
+  );
 
-  // Pick one grid setting
-  const [gridCols, gridRows, maxBigSize, maxIntermediates] =
-    GRID_SETTINGS[Math.floor(rng() * GRID_SETTINGS.length)];
+  const rng = () =>
+    prand.unsafeUniformIntDistribution(0, 0xffffffff, generator) / 0x100000000;
+
+  const settings = GRID_SETTINGS.slice();
+  shuffle(settings, rng);
+  const [gridCols, gridRows, maxBigSize, maxIntermediates] = settings[0];
 
   const cellSize = canvasWidth / gridCols;
   const canvasHeight = cellSize * gridRows;
@@ -224,14 +236,6 @@ export function renderGridCircles({
   });
 
   return circles;
-}
-
-function seedRandom(seed: number): () => number {
-  let x = Math.sin(seed) * 10000;
-  return () => {
-    x = Math.sin(x) * 10000;
-    return x - Math.floor(x);
-  };
 }
 
 function shuffle<T>(arr: T[], rngFn: () => number) {

@@ -31,15 +31,6 @@ export async function generatePositionSvg(
   chainId: string,
   positionMetadata: PositionMetadata
 ): Promise<string> {
-  const idNum = Number(id % BigInt(Number.MAX_SAFE_INTEGER));
-  let generator = prand.xoroshiro128plus(Number(chainId));
-  generator = prand.xoroshiro128plus(
-    idNum + prand.unsafeUniformIntDistribution(0, 2 ** 32 - idNum, generator)
-  );
-
-  const randomIn = (min: number, max: number) =>
-    prand.unsafeUniformIntDistribution(min, max, generator);
-
   const token0Base64Src = positionMetadata.token0Src
     ? await urlToBase64(positionMetadata.token0Src)
     : undefined;
@@ -88,6 +79,8 @@ export async function generatePositionSvg(
       </text>
       ${renderTokenImages({ token0Base64Src, token1Base64Src })}
       ${renderGridCircles({
+        tokenId: id,
+        chainId,
         canvasWidth:
           SVG_WIDTH - 2 * SVG_GLOBAL_PADDING - 2 * SVG_INNER_RECT_STROKE_WIDTH,
         xOffset: SVG_GLOBAL_PADDING + SVG_INNER_RECT_STROKE_WIDTH,
@@ -101,7 +94,6 @@ export async function generatePositionSvg(
           positionMetadata.type === undefined
             ? SVG_HEIGHT / 16
             : 0),
-        randomSeed: idNum,
         fgColor1: [102, 28, 196, 1],
         fgColor2:
           positionMetadata.type === "Oracle"
@@ -178,6 +170,8 @@ export async function generateDCAOrderSvg(
         token1Base64Src: buyTokenBase64Src,
       })}
       ${renderGridCircles({
+        tokenId: id,
+        chainId,
         canvasWidth:
           SVG_WIDTH - 2 * SVG_GLOBAL_PADDING - 2 * SVG_INNER_RECT_STROKE_WIDTH,
         xOffset: SVG_GLOBAL_PADDING + SVG_INNER_RECT_STROKE_WIDTH,
@@ -186,7 +180,6 @@ export async function generateDCAOrderSvg(
           SVG_TEXT_Y_PADDING * 1.5 +
           SVG_MAIN_FONT_SIZE * 2 +
           SVG_TEXT_Y_PADDING,
-        randomSeed: idNum,
         fgColor1: [102, 28, 196, 1],
         fgColor2: [157, 90, 242, 1],
       })}
@@ -257,6 +250,8 @@ export async function generateLimitOrderSvg(
         token1Base64Src: buyTokenBase64Src,
       })}
       ${renderGridCircles({
+        tokenId: id,
+        chainId,
         canvasWidth:
           SVG_WIDTH - 2 * SVG_GLOBAL_PADDING - 2 * SVG_INNER_RECT_STROKE_WIDTH,
         xOffset: SVG_GLOBAL_PADDING + SVG_INNER_RECT_STROKE_WIDTH,
@@ -268,7 +263,6 @@ export async function generateLimitOrderSvg(
           (orderMetadata.formattedSellAmount === undefined
             ? SVG_HEIGHT / 16
             : 0),
-        randomSeed: idNum,
         fgColor1: [102, 28, 196, 1],
         fgColor2: [235, 30, 116, 1],
       })}
