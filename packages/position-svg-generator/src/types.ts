@@ -11,8 +11,8 @@ export interface PositionMetadata {
   formattedFeePercent: string;
   formattedTickSpacingPercent: string;
 
-  formattedMinPrice: string;
-  formattedMaxPrice: string;
+  formattedMinPrice?: string;
+  formattedMaxPrice?: string;
 
   type?: "DCA" | "Oracle" | "Full-range";
 }

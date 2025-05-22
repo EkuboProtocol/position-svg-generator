@@ -17,7 +17,7 @@ export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
       >
         ${positionMetadata.type}
       </text>`
-    : positionMetadata.token0Symbol && positionMetadata.token1Symbol
+    : positionMetadata.formattedMinPrice && positionMetadata.formattedMaxPrice
     ? `<text 
          x="${SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING)}"
          y="221"
