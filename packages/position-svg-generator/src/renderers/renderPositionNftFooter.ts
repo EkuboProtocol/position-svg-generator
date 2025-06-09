@@ -8,17 +8,26 @@ import {
 import { PositionMetadata } from "../types";
 
 export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
-  return positionMetadata.type !== undefined
-    ? `<text
+  let positionFooterTexts = ``;
+
+  if (positionMetadata.type !== undefined) {
+    positionFooterTexts += `<text
         x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
-        y="232"
-        font-size="${SVG_MAIN_FONT_SIZE}"
+        y="${positionMetadata.type === "Mev-resist" ? 230 : 232}"
+        font-size="${
+          SVG_MAIN_FONT_SIZE /
+          (positionMetadata.type === "Mev-resist" ? 1.4 : 1)
+        }"
         fill="white"
       >
         ${positionMetadata.type}
-      </text>`
-    : positionMetadata.formattedMinPrice && positionMetadata.formattedMaxPrice
-    ? `<text 
+      </text>`;
+  }
+  if (
+    positionMetadata.formattedMinPrice &&
+    positionMetadata.formattedMaxPrice
+  ) {
+    positionFooterTexts += `<text 
          x="${SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING)}"
          y="221"
          fill="#B1AFAF"
@@ -40,6 +49,8 @@ export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
          Max price: <tspan fill="white">${
            positionMetadata.formattedMaxPrice
          }</tspan>
-       </text>`
-    : "";
+       </text>`;
+  }
+
+  return positionFooterTexts;
 }
