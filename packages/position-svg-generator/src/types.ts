@@ -14,7 +14,7 @@ export interface PositionMetadata {
   formattedMinPrice?: string;
   formattedMaxPrice?: string;
 
-  type?: "DCA" | "Oracle" | "Full-range";
+  type?: "DCA" | "Oracle" | "Full-range" | "Mev-resist";
 }
 
 export interface DCAOrderMetadata {
