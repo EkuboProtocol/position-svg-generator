@@ -97,7 +97,7 @@ export async function generatePositionSvg(
         fgColor1: [102, 28, 196, 1],
         fgColor2:
           positionMetadata.type === "Oracle"
-            ? [222, 224, 96, 1]
+            ? [253, 255, 117, 1]
             : positionMetadata.type === "Mev-resist"
             ? [223, 123, 50, 1]
             : positionMetadata.type === "DCA"
