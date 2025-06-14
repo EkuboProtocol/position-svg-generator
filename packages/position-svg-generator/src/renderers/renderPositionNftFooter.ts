@@ -13,10 +13,10 @@ export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
   if (positionMetadata.type !== undefined) {
     positionFooterTexts += `<text
         x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
-        y="${positionMetadata.type === "Mev-resist" ? 230 : 232}"
+        y="${positionMetadata.type === "MEV-resist" ? 230 : 232}"
         font-size="${
           SVG_MAIN_FONT_SIZE /
-          (positionMetadata.type === "Mev-resist" ? 1.4 : 1)
+          (positionMetadata.type === "MEV-resist" ? 1.4 : 1)
         }"
         fill="white"
       >

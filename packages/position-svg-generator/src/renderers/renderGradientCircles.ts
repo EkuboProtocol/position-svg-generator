@@ -16,7 +16,7 @@ export function renderGradientCircles(type: PositionMetadata["type"]) {
       ? "#9D5AF266"
       : type === "Oracle"
       ? "#FDFF7533"
-      : type === "Mev-resist"
+      : type === "MEV-resist"
       ? "#DF7B3266"
       : type === "Full-range"
       ? "#26E8AD66"
