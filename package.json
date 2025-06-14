@@ -2,6 +2,7 @@
   "name": "position-svg-generator-repo",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/position-svg-generator",
+    "packages/demo-app"
   ]
 }
