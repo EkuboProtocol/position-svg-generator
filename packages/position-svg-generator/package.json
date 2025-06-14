@@ -1,6 +1,6 @@
 {
   "name": "@ekubo/position-svg-generator",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Library to generate the NFT position SVG for Ekubo Protocol",
   "main": "dist/index.mjs",
   "scripts": {
