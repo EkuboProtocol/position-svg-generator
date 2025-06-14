@@ -96,13 +96,13 @@ export async function generatePositionSvg(
             : 0),
         fgColor1: [102, 28, 196, 1],
         fgColor2:
-          positionMetadata.type === "Oracle"
+          positionMetadata.type === "oracle"
             ? [253, 255, 117, 1]
-            : positionMetadata.type === "MEV-resist"
+            : positionMetadata.type === "mev_resist"
             ? [223, 123, 50, 1]
-            : positionMetadata.type === "DCA"
+            : positionMetadata.type === "dca"
             ? [157, 90, 242, 1]
-            : positionMetadata.type === "Full-range"
+            : positionMetadata.type === "full_range"
             ? [38, 232, 173, 1]
             : [235, 30, 116, 1],
       })}
@@ -134,7 +134,7 @@ export async function generateDCAOrderSvg(
       ${renderStyles()}
       ${renderDefs()}
       ${renderBackgroundSquares()}
-      ${renderGradientCircles("DCA")}
+      ${renderGradientCircles("dca")}
 
       <text
         x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"

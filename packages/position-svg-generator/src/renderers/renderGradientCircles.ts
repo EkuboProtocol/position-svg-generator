@@ -12,13 +12,13 @@ export function renderGradientCircles(type: PositionMetadata["type"]) {
     <circle cx="${SVG_WIDTH / 1.2}" cy="${SVG_HEIGHT * 0.9}" r="${
     SVG_WIDTH / 2
   }" fill="${
-    type === "DCA"
+    type === "dca"
       ? "#9D5AF266"
-      : type === "Oracle"
+      : type === "oracle"
       ? "#FDFF7533"
-      : type === "MEV-resist"
+      : type === "mev_resist"
       ? "#DF7B3266"
-      : type === "Full-range"
+      : type === "full_range"
       ? "#26E8AD66"
       : "#EB1E7466"
   }" filter="url(#${gradientBlurId})"/>
