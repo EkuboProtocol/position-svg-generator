@@ -6,6 +6,7 @@ import {
   SVG_WIDTH,
 } from "../constants/svg";
 import { PositionMetadata } from "../types";
+import { getTypeDisplayLabel } from "../util/typeLabels";
 
 export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
   let positionFooterTexts = ``;
@@ -13,14 +14,14 @@ export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
   if (positionMetadata.type !== undefined) {
     positionFooterTexts += `<text
         x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
-        y="${positionMetadata.type === "Mev-resist" ? 230 : 232}"
+        y="${positionMetadata.type === "mev_resist" ? 230 : 232}"
         font-size="${
           SVG_MAIN_FONT_SIZE /
-          (positionMetadata.type === "Mev-resist" ? 1.4 : 1)
+          (positionMetadata.type === "mev_resist" ? 2.0 : 1)
         }"
         fill="white"
       >
-        ${positionMetadata.type}
+        ${getTypeDisplayLabel(positionMetadata.type)}
       </text>`;
   }
   if (

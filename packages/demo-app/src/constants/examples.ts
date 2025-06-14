@@ -44,7 +44,7 @@ export const SVG_POSITION_EXAMPLES = [
         formattedFeePercent: "0.001%",
         formattedTickSpacingPercent: "0%",
 
-        type: "Full-range",
+        type: "full_range",
       },
     ],
   },
@@ -67,7 +67,7 @@ export const SVG_POSITION_EXAMPLES = [
         formattedFeePercent: "0.001%",
         formattedTickSpacingPercent: "0%",
 
-        type: "DCA",
+        type: "dca",
       },
     ],
   },
@@ -90,12 +90,12 @@ export const SVG_POSITION_EXAMPLES = [
         formattedFeePercent: "0%",
         formattedTickSpacingPercent: "0%",
 
-        type: "Oracle",
+        type: "oracle",
       },
     ],
   },
   {
-    title: "Mev-resist position",
+    title: "MEV-resist position",
     args: [
       "1",
       {
@@ -116,7 +116,7 @@ export const SVG_POSITION_EXAMPLES = [
         formattedMinPrice: "1,123 ETH / USDC",
         formattedMaxPrice: "1,123 ETH / USDC",
 
-        type: "Mev-resist",
+        type: "mev_resist",
       },
     ],
   },
