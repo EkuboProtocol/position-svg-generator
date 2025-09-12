@@ -4,7 +4,9 @@
   "description": "Library to generate the NFT position SVG for Ekubo Protocol",
   "main": "dist/index.mjs",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:snapshots": "vitest run src/__tests__/snapshots.test.ts",
     "build": "tsup src/index.ts --dts --minify --format esm",
     "dev": "tsup src/index.ts --dts --minify --format esm --watch",
     "prepublishOnly": "rm -rf dist/ && npm run build"
