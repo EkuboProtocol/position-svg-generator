@@ -9,7 +9,7 @@ This directory contains snapshot tests for the SVG generator functions. These sn
 - `position-2-full-range-position-with-no-extension.svg` - Full range position with no extension
 - `position-3-twamm-position.svg` - TWAMM position
 - `position-4-oracle-position.svg` - Oracle position
-- `position-5-mev-resist-position.svg` - MEV-resist position
+- `position-5-mev-capture-position.svg` - MEV-capture position
 
 ### DCA Order SVGs (4 examples)
 - `dca-order-1.svg` - DCA order with both token symbols and images

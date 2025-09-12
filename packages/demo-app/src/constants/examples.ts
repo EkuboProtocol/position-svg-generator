@@ -95,7 +95,7 @@ export const SVG_POSITION_EXAMPLES = [
     ],
   },
   {
-    title: "MEV-resist position",
+    title: "MEV-capture position",
     args: [
       "1",
       {
@@ -116,7 +116,7 @@ export const SVG_POSITION_EXAMPLES = [
         formattedMinPrice: "1,123 ETH / USDC",
         formattedMaxPrice: "1,123 ETH / USDC",
 
-        type: "mev_resist",
+        type: "mev_capture",
       },
     ],
   },
