@@ -14,7 +14,8 @@ export interface PositionMetadata {
   formattedMinPrice?: string;
   formattedMaxPrice?: string;
 
-  type?: "dca" | "oracle" | "full_range" | "mev_capture";
+  type?: "dca" | "oracle" | "mev_capture" | "boosted_fees";
+  isFullRange: boolean;
 }
 
 export interface DCAOrderMetadata {

@@ -22,11 +22,12 @@ export const SVG_POSITION_EXAMPLES = [
         formattedMaxPrice: "1,123 ETH / USDC",
 
         type: undefined,
+        isFullRange: true,
       },
     ],
   },
   {
-    title: "Full range position with no extension",
+    title: "Boosted fees position",
     args: [
       "1",
       {
@@ -44,7 +45,11 @@ export const SVG_POSITION_EXAMPLES = [
         formattedFeePercent: "0.001%",
         formattedTickSpacingPercent: "0%",
 
-        type: "full_range",
+        formattedMinPrice: "1,123 ETH / USDC",
+        formattedMaxPrice: "1,123 ETH / USDC",
+
+        type: "boosted_fees",
+        isFullRange: true,
       },
     ],
   },
@@ -68,6 +73,7 @@ export const SVG_POSITION_EXAMPLES = [
         formattedTickSpacingPercent: "0%",
 
         type: "dca",
+        isFullRange: true,
       },
     ],
   },
@@ -91,6 +97,7 @@ export const SVG_POSITION_EXAMPLES = [
         formattedTickSpacingPercent: "0%",
 
         type: "oracle",
+        isFullRange: true,
       },
     ],
   },
@@ -117,6 +124,7 @@ export const SVG_POSITION_EXAMPLES = [
         formattedMaxPrice: "1,123 ETH / USDC",
 
         type: "mev_capture",
+        isFullRange: false,
       },
     ],
   },
