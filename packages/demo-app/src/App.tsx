@@ -27,6 +27,7 @@ const POSITION_METADATA_OVERRIDES = [
     token1Symbol: "EKUBO",
     token1Src:
       "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/634d9c36-2f0b-4781-93e6-72d701b5af00/logo",
+    isFullRange: false,
   }, // Name Overflow
   {
     token0Symbol: undefined,
@@ -35,6 +36,7 @@ const POSITION_METADATA_OVERRIDES = [
 
     formattedMinPrice: undefined,
     formattedMaxPrice: undefined,
+    isFullRange: false,
   }, // One unknown token
   {
     token0Symbol: undefined,
@@ -47,6 +49,7 @@ const POSITION_METADATA_OVERRIDES = [
 
     formattedMinPrice: undefined,
     formattedMaxPrice: undefined,
+    isFullRange: false,
   }, // Two unknown token
 ] as const;
 
@@ -195,7 +198,7 @@ function App() {
                     gap: "3rem",
                   }}
                 >
-                  {Array(16)
+                  {Array(4)
                     .fill(null)
                     .map((_, index) => {
                       const randomTokenId = randomBigIntFromBytes(index + 1);

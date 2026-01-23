@@ -29,7 +29,7 @@ import { renderLimitOrderNftFooter } from "./renderers/renderLimitOrderNftFooter
 export async function generatePositionSvg(
   id: bigint,
   chainId: string,
-  positionMetadata: PositionMetadata
+  positionMetadata: PositionMetadata,
 ): Promise<string> {
   const token0Base64Src = positionMetadata.token0Src
     ? await urlToBase64(positionMetadata.token0Src)
@@ -57,9 +57,9 @@ export async function generatePositionSvg(
           positionMetadata.token0Symbol ??
           shortenAddress(positionMetadata.token0Address)
         }/${
-    positionMetadata.token1Symbol ??
-    shortenAddress(positionMetadata.token1Address)
-  }
+          positionMetadata.token1Symbol ??
+          shortenAddress(positionMetadata.token1Address)
+        }
       </text>
 
       <text
@@ -99,12 +99,12 @@ export async function generatePositionSvg(
           positionMetadata.type === "oracle"
             ? [253, 255, 117, 1]
             : positionMetadata.type === "mev_capture"
-            ? [223, 123, 50, 1]
-            : positionMetadata.type === "dca"
-            ? [157, 90, 242, 1]
-            : positionMetadata.type === "full_range"
-            ? [38, 232, 173, 1]
-            : [235, 30, 116, 1],
+              ? [223, 123, 50, 1]
+              : positionMetadata.type === "dca"
+                ? [157, 90, 242, 1]
+                : positionMetadata.type === "boosted_fees"
+                  ? [38, 232, 173, 1]
+                  : [235, 30, 116, 1],
       })}
       ${renderPositionNftFooter(positionMetadata)}
     </svg>`;
@@ -113,12 +113,12 @@ export async function generatePositionSvg(
 export async function generateDCAOrderSvg(
   id: bigint,
   chainId: string,
-  orderMetadata: DCAOrderMetadata
+  orderMetadata: DCAOrderMetadata,
 ) {
   const idNum = Number(id % BigInt(Number.MAX_SAFE_INTEGER));
   let generator = prand.xoroshiro128plus(Number(chainId));
   generator = prand.xoroshiro128plus(
-    idNum + prand.unsafeUniformIntDistribution(0, 2 ** 32 - idNum, generator)
+    idNum + prand.unsafeUniformIntDistribution(0, 2 ** 32 - idNum, generator),
   );
 
   const sellTokenBase64Src = orderMetadata.sellTokenSrc
@@ -161,9 +161,9 @@ export async function generateDCAOrderSvg(
           orderMetadata.buyTokenSymbol ??
           shortenAddress(orderMetadata.buyTokenAddress)
         } with ${
-    orderMetadata.sellTokenSymbol ??
-    shortenAddress(orderMetadata.sellTokenAddress)
-  }
+          orderMetadata.sellTokenSymbol ??
+          shortenAddress(orderMetadata.sellTokenAddress)
+        }
       </text>
 
 
@@ -193,12 +193,12 @@ export async function generateDCAOrderSvg(
 export async function generateLimitOrderSvg(
   id: bigint,
   chainId: string,
-  orderMetadata: LimitOrderMetadata
+  orderMetadata: LimitOrderMetadata,
 ) {
   const idNum = Number(id % BigInt(Number.MAX_SAFE_INTEGER));
   let generator = prand.xoroshiro128plus(Number(chainId));
   generator = prand.xoroshiro128plus(
-    idNum + prand.unsafeUniformIntDistribution(0, 2 ** 32 - idNum, generator)
+    idNum + prand.unsafeUniformIntDistribution(0, 2 ** 32 - idNum, generator),
   );
 
   const sellTokenBase64Src = orderMetadata.sellTokenSrc
@@ -241,9 +241,9 @@ export async function generateLimitOrderSvg(
           orderMetadata.buyTokenSymbol ??
           shortenAddress(orderMetadata.buyTokenAddress)
         } with ${
-    orderMetadata.sellTokenSymbol ??
-    shortenAddress(orderMetadata.sellTokenAddress)
-  }
+          orderMetadata.sellTokenSymbol ??
+          shortenAddress(orderMetadata.sellTokenAddress)
+        }
       </text>
 
 
