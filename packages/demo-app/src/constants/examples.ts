@@ -13,7 +13,7 @@ export const SVG_POSITION_EXAMPLES = [
         token0Src:
           "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/7dcb2db2-a7a7-44af-660b-8262e057a100/logo",
         token1Src:
-          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
+          "https://assets.coingecko.com/coins/images/40143/standard/cbbtc.webp",
 
         formattedFeePercent: "0.001%",
         formattedTickSpacingPercent: "0.001%",
