@@ -121,7 +121,7 @@
           cx="220.25"
           cy="27.805"
           r="11.75"
-          fill="none"
+          fill="#1D1D1D"
           stroke="#9D5AF2"
           stroke-width="2.5"
         />
@@ -142,7 +142,7 @@
       cx="203.8"
       cy="27.805"
       r="11.75"
-      fill="none"
+      fill="#1D1D1D"
       stroke="#9D5AF2"
       stroke-width="2.5"
     />
