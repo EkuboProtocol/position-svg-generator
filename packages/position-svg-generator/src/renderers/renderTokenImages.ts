@@ -51,7 +51,7 @@ export const renderTokenImages = ({
             SVG_IMAGE_Y_OFFSET
           }"
           r="${SVG_IMAGE_SIZE / 2}"
-          fill="none"
+          fill="#1D1D1D"
           stroke="${token1Base64Src ? "#1D1D1D" : "#9D5AF2"}"
           stroke-width="${SVG_IMAGE_STROKE_WIDTH}"
         />
@@ -103,7 +103,7 @@ export const renderTokenImages = ({
         SVG_IMAGE_Y_OFFSET
       }"
       r="${SVG_IMAGE_SIZE / 2}"
-      fill="none"
+      fill="#1D1D1D"
       stroke="${token0Base64Src ? "#1D1D1D" : "#9D5AF2"}"
       stroke-width="${SVG_IMAGE_STROKE_WIDTH}"
     />
