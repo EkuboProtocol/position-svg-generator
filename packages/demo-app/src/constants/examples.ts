@@ -4,16 +4,16 @@ export const SVG_POSITION_EXAMPLES = [
     args: [
       "1",
       {
-        token0Symbol: "ETH",
-        token1Symbol: "USDC",
+        token0Symbol: "WBTC",
+        token1Symbol: "cbBTC",
 
-        token0Address: "0x0000000000000000000000000000000000000000",
-        token1Address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        token0Address: "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+        token1Address: "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
 
         token0Src:
-          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/7dcb2db2-a7a7-44af-660b-8262e057a100/logo",
         token1Src:
-          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e5aaa970-a998-47e8-bd43-4a3b56b87200/logo",
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/e07829b7-0382-4e03-7ecd-a478c5aa9f00/logo",
 
         formattedFeePercent: "0.001%",
         formattedTickSpacingPercent: "0.001%",
