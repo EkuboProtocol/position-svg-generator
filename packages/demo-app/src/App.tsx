@@ -1,11 +1,13 @@
 "use client";
 
 import {
+  generateAuctionOrderSvg,
   generateDCAOrderSvg,
   generateLimitOrderSvg,
   generatePositionSvg,
 } from "@ekubo/position-svg-generator";
 import {
+  SVG_AUCTION_ORDER_EXAMPLES,
   SVG_DCA_ORDER_EXAMPLES,
   SVG_LIMIT_ORDER_EXAMPLES,
   SVG_POSITION_EXAMPLES,
@@ -103,7 +105,40 @@ function DCAOrderSVG({
       const result = await generateDCAOrderSvg(tokenId, chainId, args);
       return result;
     },
-    queryKey: [tokenId.toString()],
+    queryKey: ["dca", tokenId.toString()],
+  });
+
+  if (!svgString) {
+    return (
+      <div style={{ height: "250px", width: "250px", background: "#101010" }} />
+    );
+  }
+
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: svgString,
+      }}
+    />
+  );
+}
+
+function AuctionOrderSVG({
+  tokenId,
+  chainId,
+  args,
+}: {
+  tokenId: bigint;
+  chainId: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  args: any;
+}) {
+  const { data: svgString } = useQuery({
+    queryFn: async () => {
+      const result = await generateAuctionOrderSvg(tokenId, chainId, args);
+      return result;
+    },
+    queryKey: ["auction", tokenId.toString()],
   });
 
   if (!svgString) {
@@ -136,7 +171,7 @@ function LimitOrderSVG({
       const result = await generateLimitOrderSvg(tokenId, chainId, args);
       return result;
     },
-    queryKey: [tokenId.toString()],
+    queryKey: ["limit", tokenId.toString()],
   });
 
   if (!svgString) {
@@ -246,6 +281,38 @@ function App() {
 
               return (
                 <DCAOrderSVG
+                  tokenId={randomTokenId}
+                  chainId={example.args[0]}
+                  args={example.args[1]}
+                />
+              );
+            })}
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: "#1D1D1D",
+            borderRadius: "1rem",
+            padding: "1rem",
+            width: "100%",
+          }}
+        >
+          <h2 style={{ marginBottom: 0, marginTop: 0 }}>Auction Orders</h2>
+
+          <div
+            style={{
+              marginTop: "1rem",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(16rem , 1fr))",
+              gap: "3rem",
+            }}
+          >
+            {SVG_AUCTION_ORDER_EXAMPLES.map((example, index) => {
+              const randomTokenId = randomBigIntFromBytes(index + 1);
+
+              return (
+                <AuctionOrderSVG
                   tokenId={randomTokenId}
                   chainId={example.args[0]}
                   args={example.args[1]}

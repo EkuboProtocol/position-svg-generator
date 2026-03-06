@@ -26,6 +26,8 @@ import { renderPositionNftFooter } from "./renderers/renderPositionNftFooter";
 import { renderDCAOrderNftFooter } from "./renderers/renderDCAOrderNftFooter";
 import { renderLimitOrderNftFooter } from "./renderers/renderLimitOrderNftFooter";
 
+export type TimedOrderKind = "dca" | "auction";
+
 export async function generatePositionSvg(
   id: bigint,
   chainId: string,
@@ -114,7 +116,12 @@ export async function generateDCAOrderSvg(
   id: bigint,
   chainId: string,
   orderMetadata: DCAOrderMetadata,
+  options?: {
+    kind?: TimedOrderKind;
+  },
 ) {
+  const kind = options?.kind ?? "dca";
+
   const idNum = Number(id % BigInt(Number.MAX_SAFE_INTEGER));
   let generator = prand.xoroshiro128plus(Number(chainId));
   generator = prand.xoroshiro128plus(
@@ -128,6 +135,17 @@ export async function generateDCAOrderSvg(
   const buyTokenBase64Src = orderMetadata.buyTokenSrc
     ? await urlToBase64(orderMetadata.buyTokenSrc)
     : undefined;
+
+  const sellTokenLabel =
+    orderMetadata.sellTokenSymbol ?? shortenAddress(orderMetadata.sellTokenAddress);
+  const buyTokenLabel =
+    orderMetadata.buyTokenSymbol ?? shortenAddress(orderMetadata.buyTokenAddress);
+
+  const title = kind === "auction" ? "Auction" : "DCA Order";
+  const subtitle =
+    kind === "auction"
+      ? `Sell ${sellTokenLabel} for ${buyTokenLabel}`
+      : `Buy ${buyTokenLabel} with ${sellTokenLabel}`;
 
   return `
     <svg width="${SVG_WIDTH}" height="${SVG_HEIGHT}" viewBox="0 0 ${SVG_WIDTH} ${SVG_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
@@ -143,7 +161,7 @@ export async function generateDCAOrderSvg(
         fill="white"
         clip-path="url(#innerRectClip)"
       >
-        DCA Order
+        ${title}
       </text>
 
       <text
@@ -157,13 +175,7 @@ export async function generateDCAOrderSvg(
         fill="#878787"
         font-size="${SVG_SMALLER_FONT_SIZE}"
       >
-        Buy ${
-          orderMetadata.buyTokenSymbol ??
-          shortenAddress(orderMetadata.buyTokenAddress)
-        } with ${
-          orderMetadata.sellTokenSymbol ??
-          shortenAddress(orderMetadata.sellTokenAddress)
-        }
+        ${subtitle}
       </text>
 
 
@@ -188,6 +200,14 @@ export async function generateDCAOrderSvg(
       ${renderDCAOrderNftFooter(orderMetadata)}
     </svg>
   `;
+}
+
+export async function generateAuctionOrderSvg(
+  id: bigint,
+  chainId: string,
+  orderMetadata: DCAOrderMetadata,
+) {
+  return generateDCAOrderSvg(id, chainId, orderMetadata, { kind: "auction" });
 }
 
 export async function generateLimitOrderSvg(
