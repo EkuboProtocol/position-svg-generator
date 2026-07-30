@@ -128,6 +128,33 @@ export const SVG_POSITION_EXAMPLES = [
       },
     ],
   },
+  {
+    title: "ve33 dynamic-fee position",
+    args: [
+      "4663",
+      {
+        token0Symbol: "USDG",
+        token1Symbol: "NVDA",
+
+        token0Address: "0x5fc5360d0400a0fd4f2af552add042d716f1d168",
+        token1Address: "0xd0601ce157db5bdc3162bbac2a2c8af5320d9eec",
+
+        token0Src:
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/75338949-7643-40d7-03f0-da22f439e400/logo",
+        token1Src:
+          "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/1a822c02-4020-4b2c-9bc7-4b44a51e9a00/logo",
+
+        formattedFeePercent: "0%",
+        formattedTickSpacingPercent: "0.102%",
+
+        formattedMinPrice: "150.036 USDG / NVDA",
+        formattedMaxPrice: "253.448 USDG / NVDA",
+
+        type: "ve33",
+        isFullRange: false,
+      },
+    ],
+  },
 ] as const;
 
 export const SVG_DCA_ORDER_EXAMPLES = [

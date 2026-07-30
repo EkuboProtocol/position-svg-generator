@@ -49,6 +49,11 @@ describe('SVG Generator Snapshots', () => {
         expect(svg).toContain('</svg>');
         expect(svg).toContain(metadata.token0Symbol || 'undefined');
         expect(svg).toBeTruthy();
+
+        if (metadata.type === 've33') {
+          expect(svg).toContain('<tspan font-style="italic">Dyn.</tspan>');
+          expect(svg).toMatch(/>\s*ve33\s*<\/text>/);
+        }
       });
     });
   });

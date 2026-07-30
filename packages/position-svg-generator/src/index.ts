@@ -70,7 +70,11 @@ export async function generatePositionSvg(
         font-size="${SVG_MAIN_FONT_SIZE}"
         fill="white"
       >
-        ${positionMetadata.formattedFeePercent}
+        ${
+          positionMetadata.type === "ve33"
+            ? '<tspan font-style="italic">Dyn.</tspan>'
+            : positionMetadata.formattedFeePercent
+        }
         ${
           positionMetadata.type === undefined
             ? `<tspan fill="#878787" font-size="${SVG_SMALLER_FONT_SIZE}">

@@ -10,5 +10,7 @@ export function getTypeDisplayLabel(type: PositionMetadata["type"]): string {
       return "Boosted Fees";
     case "mev_capture":
       return "MEV-capture";
+    case "ve33":
+      return "ve33";
   }
 }
