@@ -53,18 +53,10 @@ export function renderGridCircles({
     { length: bigCircleSize - smallCircleSize - 1 },
     (_, i) => i + smallCircleSize + 1
   );
-  let intermediates: number[] = [];
-  if (available.length > 0 && maxIntermediates > 0) {
-    if (available.length <= maxIntermediates) {
-      intermediates = [...available];
-    } else {
-      const step = available.length / maxIntermediates;
-      for (let i = 0; i < maxIntermediates; i++) {
-        intermediates.push(available[Math.floor(i * step)]);
-      }
-    }
-  }
-  const circleSizes = [...intermediates, bigCircleSize];
+  const circleSizes = [
+    ...pickIntermediateSizes(available, maxIntermediates),
+    bigCircleSize,
+  ];
 
   // Build types
   type CircleType = {
@@ -157,26 +149,9 @@ export function renderGridCircles({
     });
   }
 
-  // Small circles
-  const empty: [number, number][] = [];
-  for (let r = 0; r < gridRows; r++) {
-    for (let c = 0; c < gridCols; c++) {
-      if (!grid[r][c]) empty.push([r, c]);
-    }
-  }
-  let i = 0;
-  while (i < empty.length) {
-    const [r1, c1] = empty[i]!;
-    if (i + 1 < empty.length) {
-      const [r2, c2] = empty[i + 1]!;
-      grid[r1][c1] = grid[r2][c2] = true;
-      placements.push([r1, c1, r2, c2, smallCircleSize]);
-      i += 2;
-    } else {
-      grid[r1][c1] = true;
-      placements.push([r1, c1, r1, c1, smallCircleSize]);
-      i++;
-    }
+  // Whatever the pair placement left over becomes single-cell circles.
+  for (const [r1, c1, r2, c2] of pairUpEmptyCells(grid)) {
+    placements.push([r1, c1, r2, c2, smallCircleSize]);
   }
 
   // Draw
@@ -236,6 +211,47 @@ export function renderGridCircles({
   });
 
   return circles;
+}
+
+// Thins `available` down to at most `maxIntermediates` sizes, spread evenly.
+// Extracted from renderGridCircles so the main function reads as a sequence of
+// steps rather than nested branch-in-branch.
+function pickIntermediateSizes(
+  available: number[],
+  maxIntermediates: number
+): number[] {
+  if (available.length === 0 || maxIntermediates <= 0) return [];
+  if (available.length <= maxIntermediates) return [...available];
+
+  const step = available.length / maxIntermediates;
+  return Array.from(
+    { length: maxIntermediates },
+    (_, i) => available[Math.floor(i * step)]
+  );
+}
+
+// Walks the grid in row-major order and pairs up consecutive free cells,
+// marking them filled. A trailing odd cell is returned paired with itself,
+// which the caller draws as a single circle.
+function pairUpEmptyCells(
+  grid: boolean[][]
+): Array<[number, number, number, number]> {
+  const empty: [number, number][] = [];
+  for (let r = 0; r < grid.length; r++) {
+    for (let c = 0; c < grid[r].length; c++) {
+      if (!grid[r][c]) empty.push([r, c]);
+    }
+  }
+
+  const pairs: Array<[number, number, number, number]> = [];
+  for (let i = 0; i < empty.length; i += 2) {
+    const [r1, c1] = empty[i]!;
+    const [r2, c2] = empty[i + 1] ?? empty[i]!;
+    grid[r1][c1] = true;
+    grid[r2][c2] = true;
+    pairs.push([r1, c1, r2, c2]);
+  }
+  return pairs;
 }
 
 function shuffle<T>(arr: T[], rngFn: () => number) {

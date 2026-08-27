@@ -28,6 +28,41 @@ import { renderLimitOrderNftFooter } from "./renderers/renderLimitOrderNftFooter
 
 export type TimedOrderKind = "dca" | "auction";
 
+type Rgba = [number, number, number, number];
+
+// The second colour of the grid gradient identifies the extension the position
+// uses. Kept as a lookup rather than a ternary chain so adding an extension is
+// one line and does not deepen the nesting in generatePositionSvg.
+const GRID_ACCENT_BY_TYPE: Record<
+  NonNullable<PositionMetadata["type"]>,
+  Rgba
+> = {
+  oracle: [253, 255, 117, 1],
+  mev_capture: [223, 123, 50, 1],
+  dca: [157, 90, 242, 1],
+  boosted_fees: [38, 232, 173, 1],
+  ve33: [235, 30, 116, 1],
+};
+
+const GRID_ACCENT_DEFAULT: Rgba = [235, 30, 116, 1];
+
+// A plain pool with at least one unresolved token symbol renders its header on
+// an extra line, so the grid below it has to start lower.
+function positionGridYOffset(positionMetadata: PositionMetadata): number {
+  const headerWrapsToExtraLine =
+    positionMetadata.type === undefined &&
+    (positionMetadata.token0Symbol === undefined ||
+      positionMetadata.token1Symbol === undefined);
+
+  return (
+    SVG_GLOBAL_PADDING +
+    SVG_TEXT_Y_PADDING * 1.5 +
+    SVG_MAIN_FONT_SIZE * 2 +
+    SVG_TEXT_Y_PADDING +
+    (headerWrapsToExtraLine ? SVG_HEIGHT / 16 : 0)
+  );
+}
+
 export async function generatePositionSvg(
   id: bigint,
   chainId: string,
@@ -90,27 +125,12 @@ export async function generatePositionSvg(
         canvasWidth:
           SVG_WIDTH - 2 * SVG_GLOBAL_PADDING - 2 * SVG_INNER_RECT_STROKE_WIDTH,
         xOffset: SVG_GLOBAL_PADDING + SVG_INNER_RECT_STROKE_WIDTH,
-        yOffset:
-          SVG_GLOBAL_PADDING +
-          SVG_TEXT_Y_PADDING * 1.5 +
-          SVG_MAIN_FONT_SIZE * 2 +
-          SVG_TEXT_Y_PADDING +
-          ((positionMetadata.token0Symbol === undefined ||
-            positionMetadata.token1Symbol === undefined) &&
-          positionMetadata.type === undefined
-            ? SVG_HEIGHT / 16
-            : 0),
+        yOffset: positionGridYOffset(positionMetadata),
         fgColor1: [102, 28, 196, 1],
         fgColor2:
-          positionMetadata.type === "oracle"
-            ? [253, 255, 117, 1]
-            : positionMetadata.type === "mev_capture"
-              ? [223, 123, 50, 1]
-              : positionMetadata.type === "dca"
-                ? [157, 90, 242, 1]
-                : positionMetadata.type === "boosted_fees"
-                  ? [38, 232, 173, 1]
-                  : [235, 30, 116, 1],
+          positionMetadata.type === undefined
+            ? GRID_ACCENT_DEFAULT
+            : GRID_ACCENT_BY_TYPE[positionMetadata.type],
       })}
       ${renderPositionNftFooter(positionMetadata)}
     </svg>`;
