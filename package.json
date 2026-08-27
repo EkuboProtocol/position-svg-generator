@@ -4,5 +4,12 @@
   "workspaces": [
     "packages/position-svg-generator",
     "packages/demo-app"
-  ]
+  ],
+  "devDependencies": {
+    "@typescript-eslint/parser": "^8.68.0",
+    "eslint": "^9.39.5"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  }
 }

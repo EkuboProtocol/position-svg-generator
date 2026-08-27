@@ -8,32 +8,38 @@ import {
 import { PositionMetadata } from "../types";
 import { getTypeDisplayLabel } from "../util/typeLabels";
 
-export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
-  let positionFooterTexts = ``;
+// These two labels are the long ones, so they render at half size and sit two
+// pixels higher to stay optically aligned with the rest of the footer row.
+const HALF_SIZE_LABEL_TYPES = new Set(["mev_capture", "boosted_fees"]);
 
-  if (positionMetadata.type !== undefined) {
-    positionFooterTexts += `<text
+const FOOTER_RIGHT_X = SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING);
+
+function renderTypeLabel(type: PositionMetadata["type"]): string {
+  if (type === undefined) return "";
+
+  const halfSize = HALF_SIZE_LABEL_TYPES.has(type);
+
+  return `<text
         x="${SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING}"
-        y="${positionMetadata.type === "mev_capture" || positionMetadata.type === "boosted_fees" ? 230 : 232}"
-        font-size="${
-          SVG_MAIN_FONT_SIZE /
-          (positionMetadata.type === "mev_capture" ||
-          positionMetadata.type === "boosted_fees"
-            ? 2.0
-            : 1)
-        }"
+        y="${halfSize ? 230 : 232}"
+        font-size="${SVG_MAIN_FONT_SIZE / (halfSize ? 2.0 : 1)}"
         fill="white"
       >
-        ${getTypeDisplayLabel(positionMetadata.type)}
+        ${getTypeDisplayLabel(type)}
       </text>`;
-  }
-  if (
+}
+
+function renderRange(positionMetadata: PositionMetadata): string {
+  // DCA orders and oracle positions are always full range by construction, so
+  // saying so on the card would be noise rather than information.
+  const showsFullRange =
     positionMetadata.isFullRange &&
     positionMetadata.type !== "dca" &&
-    positionMetadata.type !== "oracle"
-  ) {
-    positionFooterTexts += `<text 
-         x="${SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING)}"
+    positionMetadata.type !== "oracle";
+
+  if (showsFullRange) {
+    return `<text 
+         x="${FOOTER_RIGHT_X}"
          y="228"
          fill="white"
          text-anchor="end"
@@ -41,34 +47,34 @@ export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
        >
         Full-range
        </text>`;
-  } else if (
-    positionMetadata.formattedMinPrice &&
-    positionMetadata.formattedMaxPrice
-  ) {
-    positionFooterTexts += `<text 
-         x="${SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING)}"
+  }
+
+  const { formattedMinPrice, formattedMaxPrice } = positionMetadata;
+  if (!formattedMinPrice || !formattedMaxPrice) return "";
+
+  return `<text 
+         x="${FOOTER_RIGHT_X}"
          y="221"
          fill="#B1AFAF"
          text-anchor="end"
          font-size="${SVG_BOUNDS_FONT_SIZE}"
        >
-         Min price: <tspan fill="white">${
-           positionMetadata.formattedMinPrice
-         }</tspan>
+         Min price: <tspan fill="white">${formattedMinPrice}</tspan>
        </text>
 
        <text
-         x="${SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING)}"
+         x="${FOOTER_RIGHT_X}"
          y="${225 + SVG_BOUNDS_FONT_SIZE}"
          fill="#B1AFAF"
          text-anchor="end"
          font-size="${SVG_BOUNDS_FONT_SIZE}"
        >
-         Max price: <tspan fill="white">${
-           positionMetadata.formattedMaxPrice
-         }</tspan>
+         Max price: <tspan fill="white">${formattedMaxPrice}</tspan>
        </text>`;
-  }
+}
 
-  return positionFooterTexts;
+export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
+  return (
+    renderTypeLabel(positionMetadata.type) + renderRange(positionMetadata)
+  );
 }
