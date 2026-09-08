@@ -20,7 +20,7 @@
     "dist"
   ],
   "author": "Yohan Tancrez",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "devDependencies": {
     "tsup": "^8.2.3",
     "typescript": "^5.5.4",
