@@ -245,8 +245,8 @@ function pairUpEmptyCells(
 
   const pairs: Array<[number, number, number, number]> = [];
   for (let i = 0; i < empty.length; i += 2) {
-    const [r1, c1] = empty[i]!;
-    const [r2, c2] = empty[i + 1] ?? empty[i]!;
+    const [r1, c1] = empty[i];
+    const [r2, c2] = empty[i + 1] ?? empty[i];
     grid[r1][c1] = true;
     grid[r2][c2] = true;
     pairs.push([r1, c1, r2, c2]);
