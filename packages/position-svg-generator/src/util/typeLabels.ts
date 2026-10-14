@@ -1,6 +1,8 @@
 import { PositionMetadata } from "../types";
 
-export function getTypeDisplayLabel(type: PositionMetadata["type"]): string {
+export function getTypeDisplayLabel(
+  type: NonNullable<PositionMetadata["type"]>,
+): string {
   switch (type) {
     case "dca":
       return "DCA";
