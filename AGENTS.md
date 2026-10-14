@@ -20,6 +20,10 @@ of them on every pull request and on every push to `main`.
   `tsconfig.scripts.json` (`scripts`). TypeScript 7 is installed as
   `@typescript/native` for checks; the library package keeps `typescript` 5 only
   because tsup's declaration build needs the JavaScript compiler API.
+- The demo app imports `@ekubo/position-svg-generator` through the library's built
+  `dist`, so build the library once (`npm run build --workspace
+  packages/position-svg-generator`) on a fresh clone before `npm run check-ts`,
+  `npm run lint` or the demo app. CI does the same.
 - `packages/position-svg-generator/snapshots` is the expected SVG output,
   byte-for-byte. Run `npm test` after any refactor of the library, and never
   reformat the snapshots.

@@ -27,9 +27,15 @@ jobs:
 
       - run: npm ci
 
+      # The demo app and the type-aware lint resolve the library through its
+      # built dist, so it is built first.
+      - name: Build library
+        run: npm run build --workspace packages/position-svg-generator
+
       # Every step runs even when an earlier one fails, so one push reports
       # every kind of problem at once.
       - name: Format
+        if: ${{ !cancelled() }}
         run: npm run format:check
 
       - name: Lint
@@ -43,10 +49,6 @@ jobs:
       - name: Snapshot tests
         if: ${{ !cancelled() }}
         run: npm test --workspace packages/position-svg-generator
-
-      - name: Build library
-        if: ${{ !cancelled() }}
-        run: npm run build --workspace packages/position-svg-generator
 
       - name: Build demo app
         if: ${{ !cancelled() }}
