@@ -74,7 +74,5 @@ function renderRange(positionMetadata: PositionMetadata): string {
 }
 
 export function renderPositionNftFooter(positionMetadata: PositionMetadata) {
-  return (
-    renderTypeLabel(positionMetadata.type) + renderRange(positionMetadata)
-  );
+  return renderTypeLabel(positionMetadata.type) + renderRange(positionMetadata);
 }

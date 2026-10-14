@@ -28,7 +28,7 @@ export function renderGridCircles({
   const idNum = Number(tokenId % BigInt(Number.MAX_SAFE_INTEGER));
   let generator = prand.xoroshiro128plus(Number(chainId));
   generator = prand.xoroshiro128plus(
-    idNum + prand.unsafeUniformIntDistribution(0, 2 ** 32 - idNum, generator)
+    idNum + prand.unsafeUniformIntDistribution(0, 2 ** 32 - idNum, generator),
   );
 
   const rng = () =>
@@ -51,7 +51,7 @@ export function renderGridCircles({
   // Determine intermediate sizes
   const available = Array.from(
     { length: bigCircleSize - smallCircleSize - 1 },
-    (_, i) => i + smallCircleSize + 1
+    (_, i) => i + smallCircleSize + 1,
   );
   const circleSizes = [
     ...pickIntermediateSizes(available, maxIntermediates),
@@ -95,7 +95,7 @@ export function renderGridCircles({
   // Compute target pairs per size
   const totalPossibleArea = circleTypes.reduce(
     (sum, ct) => sum + ct.maxPairs * ct.pairArea,
-    0
+    0,
   );
   const totalAreaToFill = Math.min(totalPossibleArea, totalCells);
   const areaPerType =
@@ -108,7 +108,7 @@ export function renderGridCircles({
 
   // Placement helpers
   const grid: boolean[][] = Array.from({ length: gridRows }, () =>
-    Array(gridCols).fill(false)
+    Array(gridCols).fill(false),
   );
   const placements: Array<[number, number, number, number, number]> = [];
 
@@ -120,7 +120,7 @@ export function renderGridCircles({
         // update others
         circleTypes.forEach((other) => {
           other.validPositions = other.validPositions.filter(([rr, cc]) =>
-            isAvailable(rr, cc, other.size, other.size * 2)
+            isAvailable(rr, cc, other.size, other.size * 2),
           );
         });
         placements.push([r, c, r, c + ct.size, ct.size]);
@@ -178,7 +178,7 @@ export function renderGridCircles({
     row: number,
     col: number,
     h: number,
-    w: number
+    w: number,
   ): boolean {
     if (row + h > gridRows || col + w > gridCols) return false;
     for (let r = 0; r < h; r++) {
@@ -200,7 +200,7 @@ export function renderGridCircles({
   // generate colors
   const total = placements.length;
   const palette = Array.from({ length: total }, (_, i) =>
-    interpolateColor(fgColor1, fgColor2, total > 1 ? i / (total - 1) : 0.5)
+    interpolateColor(fgColor1, fgColor2, total > 1 ? i / (total - 1) : 0.5),
   );
   shuffle(palette, rng);
   placements.forEach((pl, idx) => {
@@ -218,7 +218,7 @@ export function renderGridCircles({
 // steps rather than nested branch-in-branch.
 function pickIntermediateSizes(
   available: number[],
-  maxIntermediates: number
+  maxIntermediates: number,
 ): number[] {
   if (available.length === 0 || maxIntermediates <= 0) return [];
   if (available.length <= maxIntermediates) return [...available];
@@ -226,7 +226,7 @@ function pickIntermediateSizes(
   const step = available.length / maxIntermediates;
   return Array.from(
     { length: maxIntermediates },
-    (_, i) => available[Math.floor(i * step)]
+    (_, i) => available[Math.floor(i * step)],
   );
 }
 
@@ -234,7 +234,7 @@ function pickIntermediateSizes(
 // marking them filled. A trailing odd cell is returned paired with itself,
 // which the caller draws as a single circle.
 function pairUpEmptyCells(
-  grid: boolean[][]
+  grid: boolean[][],
 ): Array<[number, number, number, number]> {
   const empty: [number, number][] = [];
   for (let r = 0; r < grid.length; r++) {
