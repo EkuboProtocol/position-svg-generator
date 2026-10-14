@@ -161,9 +161,11 @@ export async function generateDCAOrderSvg(
     : undefined;
 
   const sellTokenLabel =
-    orderMetadata.sellTokenSymbol ?? shortenAddress(orderMetadata.sellTokenAddress);
+    orderMetadata.sellTokenSymbol ??
+    shortenAddress(orderMetadata.sellTokenAddress);
   const buyTokenLabel =
-    orderMetadata.buyTokenSymbol ?? shortenAddress(orderMetadata.buyTokenAddress);
+    orderMetadata.buyTokenSymbol ??
+    shortenAddress(orderMetadata.buyTokenAddress);
 
   const title = kind === "auction" ? "Auction" : "DCA Order";
   const subtitle =

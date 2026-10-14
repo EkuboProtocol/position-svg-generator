@@ -1,0 +1,55 @@
+name: Checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Format, lint, types, tests and builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - run: npm ci
+
+      # The demo app and the type-aware lint resolve the library through its
+      # built dist, so it is built first.
+      - name: Build library
+        run: npm run build --workspace packages/position-svg-generator
+
+      # Every step runs even when an earlier one fails, so one push reports
+      # every kind of problem at once.
+      - name: Format
+        if: ${{ !cancelled() }}
+        run: npm run format:check
+
+      - name: Lint
+        if: ${{ !cancelled() }}
+        run: npm run lint
+
+      - name: Type check
+        if: ${{ !cancelled() }}
+        run: npm run check-ts
+
+      - name: Snapshot tests
+        if: ${{ !cancelled() }}
+        run: npm test --workspace packages/position-svg-generator
+
+      - name: Build demo app
+        if: ${{ !cancelled() }}
+        run: npm run build --workspace packages/demo-app
