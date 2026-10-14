@@ -1,0 +1,12 @@
+{
+  "packages/position-svg-generator/src/renderers/renderGridCircles.ts": {
+    "typescript(no-unnecessary-type-assertion)": {
+      "count": 2
+    }
+  },
+  "scripts/lint.mts": {
+    "typescript(no-unnecessary-type-assertion)": {
+      "count": 3
+    }
+  }
+}

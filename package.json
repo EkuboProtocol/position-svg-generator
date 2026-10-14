@@ -5,11 +5,19 @@
     "packages/position-svg-generator",
     "packages/demo-app"
   ],
-  "devDependencies": {
-    "@typescript-eslint/parser": "^8.68.0",
-    "eslint": "^9.39.5"
-  },
   "scripts": {
-    "lint": "eslint ."
+    "lint": "node scripts/lint.mts",
+    "lint:prune": "node scripts/lint.mts --prune",
+    "check-ts": "node node_modules/@typescript/native/bin/tsc -b",
+    "fix": "oxfmt",
+    "format:check": "oxfmt --check",
+    "test": "npm test --workspace packages/position-svg-generator"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "oxfmt": "0.73.0",
+    "oxlint": "1.88.0",
+    "oxlint-tsgolint": "^7.0.2004"
   }
 }

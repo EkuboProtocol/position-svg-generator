@@ -1,0 +1,17 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/position-svg-generator/tsconfig.json"
+    },
+    {
+      "path": "./packages/demo-app/tsconfig.app.json"
+    },
+    {
+      "path": "./packages/demo-app/tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.scripts.json"
+    }
+  ]
+}
