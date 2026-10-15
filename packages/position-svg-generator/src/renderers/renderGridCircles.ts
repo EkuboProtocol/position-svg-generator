@@ -42,13 +42,11 @@ export function renderGridCircles({
   const canvasHeight = cellSize * gridRows;
   const totalCells = gridCols * gridRows;
 
-  // Determine sizes
   const smallCircleSize = 1;
   const minBigSize = Math.min(2, maxBigSize);
   const bigCircleSize =
     Math.floor(rng() * (maxBigSize - minBigSize + 1)) + minBigSize;
 
-  // Determine intermediate sizes
   const available = Array.from(
     { length: bigCircleSize - smallCircleSize - 1 },
     (_, i) => i + smallCircleSize + 1,
@@ -58,7 +56,6 @@ export function renderGridCircles({
     bigCircleSize,
   ];
 
-  // Build types
   type CircleType = {
     size: number;
     pairArea: number;
@@ -92,7 +89,6 @@ export function renderGridCircles({
     };
   });
 
-  // Compute target pairs per size
   const totalPossibleArea = circleTypes.reduce(
     (sum, ct) => sum + ct.maxPairs * ct.pairArea,
     0,
@@ -106,7 +102,6 @@ export function renderGridCircles({
     ct.targetPairs = Math.min(target, ct.maxPairs);
   });
 
-  // Placement helpers
   const grid: boolean[][] = Array.from({ length: gridRows }, () =>
     Array(gridCols).fill(false),
   );
@@ -117,7 +112,6 @@ export function renderGridCircles({
     for (const [r, c] of [...ct.validPositions]) {
       if (isAvailable(r, c, ct.size, ct.size * 2)) {
         markFilled(r, c, ct.size, ct.size * 2);
-        // update others
         circleTypes.forEach((other) => {
           other.validPositions = other.validPositions.filter(([rr, cc]) =>
             isAvailable(rr, cc, other.size, other.size * 2),
@@ -130,14 +124,12 @@ export function renderGridCircles({
     return false;
   }
 
-  // Place at least one of each
   circleTypes.forEach((ct) => {
     if (ct.targetPairs > 0 && tryPlacePair(ct)) {
       ct.placedPairs++;
     }
   });
 
-  // Fill remaining
   let placing = true;
   while (placing) {
     placing = false;
@@ -149,12 +141,10 @@ export function renderGridCircles({
     });
   }
 
-  // Whatever the pair placement left over becomes single-cell circles.
   for (const [r1, c1, r2, c2] of pairUpEmptyCells(grid)) {
     placements.push([r1, c1, r2, c2, smallCircleSize]);
   }
 
-  // Draw
   let circles = "";
 
   function interpolateColor(c1: number[], c2: number[], t: number): string {
@@ -197,7 +187,6 @@ export function renderGridCircles({
     }
   }
 
-  // generate colors
   const total = placements.length;
   const palette = Array.from({ length: total }, (_, i) =>
     interpolateColor(fgColor1, fgColor2, total > 1 ? i / (total - 1) : 0.5),
@@ -213,9 +202,6 @@ export function renderGridCircles({
   return circles;
 }
 
-// Thins `available` down to at most `maxIntermediates` sizes, spread evenly.
-// Extracted from renderGridCircles so the main function reads as a sequence of
-// steps rather than nested branch-in-branch.
 function pickIntermediateSizes(
   available: number[],
   maxIntermediates: number,
@@ -230,9 +216,6 @@ function pickIntermediateSizes(
   );
 }
 
-// Walks the grid in row-major order and pairs up consecutive free cells,
-// marking them filled. A trailing odd cell is returned paired with itself,
-// which the caller draws as a single circle.
 function pairUpEmptyCells(
   grid: boolean[][],
 ): Array<[number, number, number, number]> {

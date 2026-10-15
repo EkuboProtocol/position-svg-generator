@@ -30,9 +30,6 @@ export type TimedOrderKind = "dca" | "auction";
 
 type Rgba = [number, number, number, number];
 
-// The second colour of the grid gradient identifies the extension the position
-// uses. Kept as a lookup rather than a ternary chain so adding an extension is
-// one line and does not deepen the nesting in generatePositionSvg.
 const GRID_ACCENT_BY_TYPE: Record<
   NonNullable<PositionMetadata["type"]>,
   Rgba
@@ -46,8 +43,6 @@ const GRID_ACCENT_BY_TYPE: Record<
 
 const GRID_ACCENT_DEFAULT: Rgba = [235, 30, 116, 1];
 
-// A plain pool with at least one unresolved token symbol renders its header on
-// an extra line, so the grid below it has to start lower.
 function positionGridYOffset(positionMetadata: PositionMetadata): number {
   const headerWrapsToExtraLine =
     positionMetadata.type === undefined &&

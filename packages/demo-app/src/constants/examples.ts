@@ -242,8 +242,6 @@ export const SVG_DCA_ORDER_EXAMPLES = [
 
 export const SVG_AUCTION_ORDER_EXAMPLES = SVG_DCA_ORDER_EXAMPLES;
 
-// formattedSellAmount?: string;
-// formattedLimitPrice?: string;
 export const SVG_LIMIT_ORDER_EXAMPLES = [
   {
     args: [

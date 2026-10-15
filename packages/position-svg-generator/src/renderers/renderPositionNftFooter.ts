@@ -8,8 +8,6 @@ import {
 import { PositionMetadata } from "../types";
 import { getTypeDisplayLabel } from "../util/typeLabels";
 
-// These two labels are the long ones, so they render at half size and sit two
-// pixels higher to stay optically aligned with the rest of the footer row.
 const HALF_SIZE_LABEL_TYPES = new Set(["mev_capture", "boosted_fees"]);
 
 const FOOTER_RIGHT_X = SVG_WIDTH - (SVG_GLOBAL_PADDING + SVG_TEXT_X_PADDING);
@@ -30,8 +28,6 @@ function renderTypeLabel(type: PositionMetadata["type"]): string {
 }
 
 function renderRange(positionMetadata: PositionMetadata): string {
-  // DCA orders and oracle positions are always full range by construction, so
-  // saying so on the card would be noise rather than information.
   const showsFullRange =
     positionMetadata.isFullRange &&
     positionMetadata.type !== "dca" &&

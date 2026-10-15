@@ -8,8 +8,6 @@ import {
   generateLimitOrderSvg,
 } from "../index";
 
-// Import examples from demo app
-// Since we're in a monorepo, we can reference the demo app examples directly
 import {
   SVG_POSITION_EXAMPLES,
   SVG_DCA_ORDER_EXAMPLES,
@@ -19,7 +17,6 @@ import {
 
 const SNAPSHOTS_DIR = join(__dirname, "..", "..", "snapshots");
 
-// Ensure snapshots directory exists
 function ensureSnapshotsDir() {
   try {
     mkdirSync(SNAPSHOTS_DIR, { recursive: true });
@@ -39,12 +36,10 @@ describe("SVG Generator Snapshots", () => {
 
         const svg = await generatePositionSvg(tokenId, chainId, metadata);
 
-        // Save as snapshot file
         const filename = `position-${index + 1}-${example.title.toLowerCase().replace(/[^a-z0-9]/g, "-")}.svg`;
         const filepath = join(SNAPSHOTS_DIR, filename);
         writeFileSync(filepath, svg);
 
-        // Basic validation that SVG was generated
         expect(svg).toContain("<svg");
         expect(svg).toContain("</svg>");
         expect(svg).toContain(metadata.token0Symbol || "undefined");
@@ -68,12 +63,10 @@ describe("SVG Generator Snapshots", () => {
 
         const svg = await generateDCAOrderSvg(orderId, chainId, metadata);
 
-        // Save as snapshot file
         const filename = `dca-order-${index + 1}.svg`;
         const filepath = join(SNAPSHOTS_DIR, filename);
         writeFileSync(filepath, svg);
 
-        // Basic validation that SVG was generated
         expect(svg).toContain("<svg");
         expect(svg).toContain("</svg>");
         expect(svg).toContain("DCA Order");
@@ -92,12 +85,10 @@ describe("SVG Generator Snapshots", () => {
 
         const svg = await generateAuctionOrderSvg(orderId, chainId, metadata);
 
-        // Save as snapshot file
         const filename = `auction-order-${index + 1}.svg`;
         const filepath = join(SNAPSHOTS_DIR, filename);
         writeFileSync(filepath, svg);
 
-        // Basic validation that SVG was generated
         expect(svg).toContain("<svg");
         expect(svg).toContain("</svg>");
         expect(svg).toContain("Auction");
@@ -116,12 +107,10 @@ describe("SVG Generator Snapshots", () => {
 
         const svg = await generateLimitOrderSvg(orderId, chainId, metadata);
 
-        // Save as snapshot file
         const filename = `limit-order-${index + 1}.svg`;
         const filepath = join(SNAPSHOTS_DIR, filename);
         writeFileSync(filepath, svg);
 
-        // Basic validation that SVG was generated
         expect(svg).toContain("<svg");
         expect(svg).toContain("</svg>");
         expect(svg).toContain("Limit Order");
