@@ -32,24 +32,24 @@ jobs:
       - name: Build library
         run: npm run build --workspace packages/position-svg-generator
 
-      # Every step runs even when an earlier one fails, so one push reports
-      # every kind of problem at once.
-      - name: Format
-        if: ${{ !cancelled() }}
-        run: npm run format:check
+      # These checks only read the sources and the built library, so they run
+      # side by side. Every one runs to the end even when another fails, so
+      # one push reports every kind of problem at once.
+      - parallel:
+          - name: Format
+            run: npm run format:check
 
-      - name: Lint
-        if: ${{ !cancelled() }}
-        run: npm run lint
+          - name: Lint
+            run: npm run lint
 
-      - name: Type check
-        if: ${{ !cancelled() }}
-        run: npm run check-ts
+          - name: Type check
+            run: npm run check-ts
 
-      - name: Snapshot tests
-        if: ${{ !cancelled() }}
-        run: npm test --workspace packages/position-svg-generator
+          - name: Snapshot tests
+            run: npm test --workspace packages/position-svg-generator
 
+      # The demo build type-checks the demo app again and writes the same
+      # incremental build files as the type check, so it runs afterwards.
       - name: Build demo app
         if: ${{ !cancelled() }}
         run: npm run build --workspace packages/demo-app
